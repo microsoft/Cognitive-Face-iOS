@@ -1,4 +1,4 @@
-Project Oxford SDK
+Microsoft Cognitive Services SDK
 
 Copyright (c) Microsoft Corporation
 
