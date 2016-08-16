@@ -48,6 +48,11 @@ typedef enum
     MPOFaceAttributeTypeHeadPose,
 } MPOFaceAttributeType;
 
+typedef enum {
+    MPOSimilarFaceSearchingModeMatchFace,
+    MPOSimilarFaceSearchingModeMatchPerson
+} MPOSimilarFaceSearchingMode;
+
 typedef void (^MPOCompletionBlock)(NSError *error);
 typedef void (^MPOFaceArrayCompletionBlock)(NSArray<MPOFace *> *collection, NSError *error);
 typedef void (^MPOSimilarFaceArrayCompletionBlock)(NSArray<MPOSimilarFace *> *collection, NSError *error);
@@ -101,13 +106,54 @@ typedef void (^MPOFaceListMetadataArrayCompletionBlock)(NSArray<MPOFaceListMetad
 - (NSURLSessionDataTask *)verifyWithFirstFaceId:(NSString *)faceId1 faceId2:(NSString *)faceId2 completionBlock:(void (^) (MPOVerifyResult *verifyResult, NSError *error))completion;
 
 /**
+ *  Verifies whether the specified face belong to the specified person.
+ *  @param faceId     the face Id
+ *  @param personId   the person Id
+ *  @param completion completionHandler
+ *  @return the verification result, MPOVerifyResult
+ */
+- (NSURLSessionDataTask *)verifyWithFirstFaceId:(NSString *)faceId personId:(NSString *)personId completionBlock:(void (^) (MPOVerifyResult *verifyResult, NSError *error))completion;
+
+/**
  *  Finds the similar faces.
  *  @param faceId     The face identifier.
- *  @param faceIds    The face list identifier.
+ *  @param faceIds    The list of face identifiers.
  *  @param completion completionHandler
  *  @return the similar faces, NSArray containg MPOSimilarFace
  */
 - (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceIds:(NSArray *)faceIds completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion;
+
+/**
+ *  Finds the similar faces.
+ *  @param faceId     The face identifier.
+ *  @param faceListId The face list identifier.
+ *  @param completion completionHandler
+ *  @return the similar faces, NSArray containg MPOSimilarFace
+ */
+- (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceListId:(NSString *)faceListId completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion;
+
+/**
+ *  Finds the similar faces.
+ *  @param faceId                     The face identifier.
+ *  @param faceIds                    The list of face identifiers.
+ *  @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000]. It defaults to 20.
+ *  @param mode                       Similar face searching mode. It can be "matchPerson" or "matchFace". It defaults to "matchPerson".
+ *  @param completion                 completionHandler
+ *  @return the similar faces, NSArray containg MPOSimilarFace
+ */
+- (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceIds:(NSArray *)faceIds maxNumOfCandidatesReturned:(NSInteger)maxNumOfCandidatesReturned mode:(MPOSimilarFaceSearchingMode)mode completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion;
+
+/**
+ *  Finds the similar faces.
+ *  @param faceId                     The face identifier.
+ *  @param faceListId                 The face list identifier.
+ *  @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000]. It defaults to 20.
+ *  @param mode                       Similar face searching mode. It can be "matchPerson" or "matchFace". It defaults to "matchPerson".
+ *  @param completion                 completionHandler
+ *  @return the similar faces, NSArray containg MPOSimilarFace
+ */
+- (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceListId:(NSString *)faceListId maxNumOfCandidatesReturned:(NSInteger)maxNumOfCandidatesReturned mode:(NSString*)mode completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion;
+
 
 /**
  *  Groups the faces.
@@ -118,7 +164,7 @@ typedef void (^MPOFaceListMetadataArrayCompletionBlock)(NSArray<MPOFaceListMetad
 - (NSURLSessionDataTask *)groupWithFaceIds:(NSArray *)faceIds completionBlock:(void (^) (MPOGroupResult *groupResult, NSError *error))completion;
 
 /**
- *  Identities the faces in a given person group.
+ *  Identities the faces in a given person group with the default confidence threshold of 0.7.
  *  @param personGroupId         the person group id
  *  @param faceIds               the face ids
  *  @param maxNumberOfCandidates The maximum number of candidates returned for each face.
@@ -126,6 +172,17 @@ typedef void (^MPOFaceListMetadataArrayCompletionBlock)(NSArray<MPOFaceListMetad
  *  @return the identification results, NSArray containing MPOIdentifyResult objects
  */
 - (NSURLSessionDataTask *)identifyWithPersonGroupId:(NSString *)personGroupId faceIds:(NSArray *)faceIds maxNumberOfCandidates:(NSInteger)maxNumberOfCandidates completionBlock:(MPOIdentifyResultArrayCompletionBlock)completion;
+
+/**
+ *  Identities the faces in a given person group.
+ *  @param personGroupId         the person group id
+ *  @param faceIds               the face ids
+ *  @param maxNumberOfCandidates The maximum number of candidates returned for each face.
+ *  @param confidenceThreshold   The confidence threshold of identification.
+ *  @param completion            completionHandler
+ *  @return the identification results, NSArray containing MPOIdentifyResult objects
+ */
+- (NSURLSessionDataTask *)identifyWithPersonGroupId:(NSString *)personGroupId faceIds:(NSArray *)faceIds maxNumberOfCandidates:(NSInteger)maxNumberOfCandidates confidenceThreshold:(CGFloat)confidenceThreshold completionBlock:(MPOIdentifyResultArrayCompletionBlock)completion;
 
 
 #pragma mark Person Groups APIs
@@ -172,7 +229,23 @@ typedef void (^MPOFaceListMetadataArrayCompletionBlock)(NSArray<MPOFaceListMetad
  *  @param completion completionHandler
  *  @return person group entities, NSArray of MPOPersonGroup objects
  */
-- (NSURLSessionDataTask *)getPersonGroupsWithCompletion:(MPOPersonGroupArrayCompletionBlock)completion;
+- (NSURLSessionDataTask *)getPersonGroupsWithCompletion:(MPOPersonGroupArrayCompletionBlock)completion NS_DEPRECATED_IOS(7.0, 7.0);
+
+/**
+ *  Lists all person groups
+ *  @param completion completionHandler
+ *  @return person group entities, NSArray of MPOPersonGroup objects
+ */
+- (NSURLSessionDataTask *)listPersonGroupsWithCompletion:(MPOPersonGroupArrayCompletionBlock)completion;
+
+/**
+ *  Lists all person groups
+ *  @start List person groups from the least personGroupId greater than the "start". It contains no more than 64 characters. Default is empty.
+ *  @top   The number of person groups to list, ranging in [1, 1000]. Default is 1000.
+ *  @param completion completionHandler
+ *  @return person group entities, NSArray of MPOPersonGroup objects
+ */
+- (NSURLSessionDataTask *)listPersonGroupsWithStart:(NSString*)start top:(NSInteger)top completionBlock:(MPOPersonGroupArrayCompletionBlock)completion;
 
 /**
  *  Trains the person group
@@ -239,7 +312,16 @@ typedef void (^MPOFaceListMetadataArrayCompletionBlock)(NSArray<MPOFaceListMetad
  *  @param completion    completion handler
  *  @return the persons, NSArray containing MPOPerson objects
  */
-- (NSURLSessionDataTask *)getPersonsWithPersonGroupId:(NSString *)personGroupId completionBlock:(MPOPersonArrayCompletionBlock)completion;
+- (NSURLSessionDataTask *)getPersonsWithPersonGroupId:(NSString *)personGroupId completionBlock:(MPOPersonArrayCompletionBlock)completion NS_DEPRECATED_IOS(7.0, 7.0);
+
+/**
+ *  Lists all persons inside a person group
+ *  @param personGroupId the person group id
+ *  @param completion    completion handler
+ *  @return the persons, NSArray containing MPOPerson objects
+ */
+- (NSURLSessionDataTask *)listPersonsWithPersonGroupId:(NSString *)personGroupId completionBlock:(MPOPersonArrayCompletionBlock)completion;
+
 
 /**
  *  Gets a face of a person

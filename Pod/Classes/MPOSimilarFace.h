@@ -32,5 +32,6 @@
 #import <Foundation/Foundation.h>
 
 @interface MPOSimilarFace : NSObject
-@property NSString *faceId;
+@property (nonatomic, retain) NSString *faceId;
+@property (nonatomic, retain) NSNumber *confidence;
 @end
