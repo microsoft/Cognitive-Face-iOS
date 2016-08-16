@@ -39,6 +39,7 @@
 #import "MPOAddPersistedFaceResult.h"
 #import "MPOFaceList.h"
 #import "MPOFaceListMetadata.h"
+
 typedef enum
 {
     MPOFaceAttributeTypeAge = 1,
@@ -49,7 +50,7 @@ typedef enum
 } MPOFaceAttributeType;
 
 typedef enum {
-    MPOSimilarFaceSearchingModeMatchFace,
+    MPOSimilarFaceSearchingModeMatchFace = 1,
     MPOSimilarFaceSearchingModeMatchPerson
 } MPOSimilarFaceSearchingMode;
 
