@@ -70,11 +70,11 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
         }
         if ([number isEqualToNumber:@(MPOFaceAttributeTypeHeadPose)]) {
             [faceAttributesStringArray addObject:@"headPose"];
-
+            
         }
         if ([number isEqualToNumber:@(MPOFaceAttributeTypeSmile)]) {
             [faceAttributesStringArray addObject:@"smile"];
-
+            
         }
         if ([number isEqualToNumber:@(MPOFaceAttributeTypeFacialHair)]) {
             [faceAttributesStringArray addObject:@"facialHair"];
@@ -107,18 +107,18 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
                                            @"returnFaceAttributes" : ObjectOrNull([self faceAttributesWithArray:returnFaceAttributes])}
                                 bodyData: nil
                               completion:^(NSURLResponse *response, id responseObject, NSError *error) {
-        
-        if (!error && [responseObject isKindOfClass:[NSArray class]]) {
-            
-            for (NSDictionary *face in responseObject) {
-                MPOFace *newFace = [[MPOFace alloc] initWithDictionary:face];
-                [responseCollection addObject:newFace];
-            }
-        }
-        
-        [self runCompletionOnMainQueueWithBlock:completion object:responseCollection error:error];
-    }];
-
+                                  
+                                  if (!error && [responseObject isKindOfClass:[NSArray class]]) {
+                                      
+                                      for (NSDictionary *face in responseObject) {
+                                          MPOFace *newFace = [[MPOFace alloc] initWithDictionary:face];
+                                          [responseCollection addObject:newFace];
+                                      }
+                                  }
+                                  
+                                  [self runCompletionOnMainQueueWithBlock:completion object:responseCollection error:error];
+                              }];
+    
 }
 
 - (NSURLSessionDataTask *)detectWithData:(NSData *)data returnFaceId:(BOOL)returnFaceId returnFaceLandmarks:(BOOL)returnFaceLandmarks returnFaceAttributes:(NSArray *)returnFaceAttributes completionBlock:(MPOFaceArrayCompletionBlock)completion {
@@ -152,16 +152,16 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
         MPOVerifyResult *verifyResult = nil;
         
         if (!error && [responseObject isKindOfClass:[NSDictionary class]]) {
-             verifyResult = [[MPOVerifyResult alloc] initWithDictionary:responseObject];
+            verifyResult = [[MPOVerifyResult alloc] initWithDictionary:responseObject];
         }
         
         [self runCompletionOnMainQueueWithBlock:completion object:verifyResult error:error];
     }];
 }
 
-- (NSURLSessionDataTask *)verifyWithFirstFaceId:(NSString *)faceId personId:(NSString *)personId completionBlock:(void (^) (MPOVerifyResult *verifyResult, NSError *error))completion {
+- (NSURLSessionDataTask *)verifyWithFaceId:(NSString *)faceId personId:(NSString *)personId personGroupId:(NSString *)personGroupId completionBlock:(void (^) (MPOVerifyResult *verifyResult, NSError *error))completion {
     
-    return [self startTaskWithHttpMethod:@"POST" path:@"verify" parameters:@{@"faceId" : faceId, @"personId" : personId} urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
+    return [self startTaskWithHttpMethod:@"POST" path:@"verify" parameters:@{@"faceId" : faceId, @"personId" : personId, personGroupId: @ "personGroupId"} urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
         
         MPOVerifyResult *verifyResult = nil;
         
@@ -176,7 +176,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 //return IdentifyResult[]
 - (NSURLSessionDataTask *)identifyWithPersonGroupId:(NSString *)personGroupId faceIds:(NSArray *)faceIds maxNumberOfCandidates:(NSInteger)maxNumberOfCandidates completionBlock:(MPOIdentifyResultArrayCompletionBlock)completion {
     
-    return [self identifyWithPersonGroupId:personGroupId faceIds:faceIds maxNumberOfCandidates:maxNumberOfCandidates confidenceThreshold:0.7 completionBlock:completion];
+    return [self identifyWithPersonGroupId:personGroupId faceIds:faceIds maxNumberOfCandidates:maxNumberOfCandidates confidenceThreshold:0.5 completionBlock:completion];
 }
 
 - (NSURLSessionDataTask *)identifyWithPersonGroupId:(NSString *)personGroupId faceIds:(NSArray *)faceIds maxNumberOfCandidates:(NSInteger)maxNumberOfCandidates confidenceThreshold:(CGFloat)confidenceThreshold completionBlock:(MPOIdentifyResultArrayCompletionBlock)completion {
@@ -236,11 +236,11 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 }
 
 - (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceIds:(NSArray *)faceIds maxNumOfCandidatesReturned:(NSInteger)maxNumOfCandidatesReturned mode:(MPOSimilarFaceSearchingMode)mode completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion {
-    return [self findSimilarWithFaceId:faceId faceListId:nil faceIds:faceIds maxNumOfCandidatesReturned:20 mode:mode completionBlock:completion];
+    return [self findSimilarWithFaceId:faceId faceListId:nil faceIds:faceIds maxNumOfCandidatesReturned:maxNumOfCandidatesReturned mode:mode completionBlock:completion];
 }
 
 - (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceListId:(NSString *)faceListId maxNumOfCandidatesReturned:(NSInteger)maxNumOfCandidatesReturned mode:(MPOSimilarFaceSearchingMode)mode completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion {
-    return [self findSimilarWithFaceId:faceId faceListId:faceListId faceIds:nil maxNumOfCandidatesReturned:20 mode:mode completionBlock:completion];
+    return [self findSimilarWithFaceId:faceId faceListId:faceListId faceIds:nil maxNumOfCandidatesReturned:maxNumOfCandidatesReturned mode:mode completionBlock:completion];
 }
 
 
@@ -264,7 +264,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
  * =============================================================
  * ================ PersonGroups =================
  * =============================================================
-*/
+ */
 
 - (NSURLSessionDataTask *)createPersonGroupWithId:(NSString *)personGroupId name:(NSString *)name userData:(NSString *)userData completionBlock:(MPOCompletionBlock)completion {
     
@@ -277,7 +277,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 - (NSURLSessionDataTask *)getPersonGroupWithPersonGroupId:(NSString *)personGroupId completionBlock:(void (^) (MPOPersonGroup *personGroup, NSError *error))completion {
     
     return [self startTaskWithHttpMethod:@"GET" path:[NSString stringWithFormat:@"persongroups/%@", personGroupId] parameters:nil urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
-       
+        
         MPOPersonGroup *personGroup = nil;
         
         if (!error) {
@@ -291,7 +291,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 - (NSURLSessionDataTask *)updatePersonGroupWithPersonGroupId:(NSString *)personGroupId name:(NSString *)name userData:(NSString *)userData completionBlock:(MPOCompletionBlock)completion {
     
     return [self startTaskWithHttpMethod:@"PATCH" path:[NSString stringWithFormat:@"persongroups/%@", personGroupId] parameters:@{@"name" : name, @"userData" : ObjectOrNull(userData)} urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
-       
+        
         [self runCompletionOnMainQueueWithBlock:completion error:error];
     }];
 }
@@ -299,7 +299,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 - (NSURLSessionDataTask *)deletePersonGroupWithPersonGroupId:(NSString *)personGroupId completionBlock:(MPOCompletionBlock)completion {
     
     return [self startTaskWithHttpMethod:@"DELETE" path:[NSString stringWithFormat:@"persongroups/%@", personGroupId] parameters:nil urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
-       
+        
         [self runCompletionOnMainQueueWithBlock:completion error:error];
     }];
 }
@@ -315,7 +315,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 }
 
 - (NSURLSessionDataTask *)listPersonGroupsWithStart:(NSString*)start top:(NSInteger)top completionBlock:(MPOPersonGroupArrayCompletionBlock)completion {
-    top = MAX(1000, top);
+    top = top > 1000 ? 1000 : top;
     NSString * url = [NSString stringWithFormat:@"persongroups?top=%d", top];
     if (start != nil) {
         url = [url stringByAppendingString:[NSString stringWithFormat:@"&start=%@", start]];
@@ -347,7 +347,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
     
     return [self startTaskWithHttpMethod:@"GET" path:[NSString stringWithFormat:@"persongroups/%@/training", personGroupId] parameters:nil urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
         MPOTrainingStatus *trainingStatus = nil;
-
+        
         if (!error) {
             trainingStatus = [[MPOTrainingStatus alloc] initWithDictionary:responseObject];
         }
@@ -368,7 +368,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 - (NSURLSessionDataTask *)createPersonWithPersonGroupId:(NSString *)personGroupId name:(NSString *)name userData:(NSString *)userData completionBlock:(void (^) (MPOCreatePersonResult *createPersonResult, NSError *error))completion {
     
     return [self startTaskWithHttpMethod:@"POST" path:[NSString stringWithFormat:@"persongroups/%@/persons", personGroupId] parameters:@{@"name" : name, @"userData" : ObjectOrNull(userData)} urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
-
+        
         MPOCreatePersonResult *personResult = nil;
         
         if (!error) {
@@ -384,7 +384,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 - (NSURLSessionDataTask *)getPersonWithPersonGroupId:(NSString *)personGroupId personId:(NSString *)personId completionBlock:(void (^) (MPOPerson *person, NSError *error))completion {
     
     return [self startTaskWithHttpMethod:@"GET" path:[NSString stringWithFormat:@"persongroups/%@/persons/%@", personGroupId, personId] parameters:nil urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
-       
+        
         MPOPerson *personResult = nil;
         
         if (!error) {
@@ -397,7 +397,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 }
 
 - (NSURLSessionDataTask *)updatePersonWithPersonGroupId:(NSString *)personGroupId personId:(NSString *)personId name:(NSString *)name userData:(NSString *)userData completionBlock:(MPOCompletionBlock)completion {
-
+    
     return [self startTaskWithHttpMethod:@"PATCH" path:[NSString stringWithFormat:@"persongroups/%@/persons/%@", personGroupId, personId] parameters:@{@"name" : name, @"userData" : ObjectOrNull(userData)} urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
         
         [self runCompletionOnMainQueueWithBlock:completion error:error];
@@ -413,7 +413,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 }
 
 - (NSURLSessionDataTask *)getPersonsWithPersonGroupId:(NSString *)personGroupId completionBlock:(MPOPersonArrayCompletionBlock)completion {
- 
+    
     return [self listPersonsWithPersonGroupId:personGroupId completionBlock:completion];
     
 }
@@ -471,7 +471,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 
 
 - (NSURLSessionDataTask *)addPersonFaceWithPersonGroupId:(NSString *)personGroupId personId:(NSString *)personId url:(NSString *)url userData:(NSString *)userData faceRectangle:(MPOFaceRectangle *)faceRectangle completionBlock:(void (^) (MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error))completion {
-
+    
     return [self startTaskWithHttpMethod:@"POST" path:[NSString stringWithFormat:@"persongroups/%@/persons/%@/persistedFaces", personGroupId, personId] parameters:@{@"url" : url} urlParams:@{@"userData" : ObjectOrNull(userData), @"targetFace" : ObjectOrNull([self faceRectangleStringRepresentation:faceRectangle])} bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
         
         MPOAddPersistedFaceResult *addPersistedFaceResult = nil;
@@ -544,7 +544,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
         }
         
         [self runCompletionOnMainQueueWithBlock:completion object:faceList error:error];
-
+        
         
     }];
 }
@@ -630,9 +630,9 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
                                          @"Content-Type" : @"application/octet-stream"
                                          };
     }
- 
+    
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-
+    
     
     //build the queryString
     
@@ -651,11 +651,11 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
         }
     }
     
-   
+    
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", basePath, path, queryString]]];
     
     request.HTTPMethod = httpMethod;
-
+    
     //if there is no body data and params is not nil, assume we have JSON to encode for the body
     if (params && !bodyData) {
         NSError *error = nil;
@@ -672,7 +672,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
         
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
         NSInteger responseStatusCode = httpResponse.statusCode;
-
+        
         if (responseStatusCode >= 200 && responseStatusCode <= 299) {
             
             NSString *contentTypeHeader = httpResponse.allHeaderFields[@"Content-Type"];
@@ -708,12 +708,12 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
     
     [dataTask resume];
     
-
+    
     return dataTask;
 }
 
 - (void)runCompletionOnMainQueueWithBlock:(void (^) (id obj, NSError *error))completionBlock object:(id )object error:(NSError *)error {
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         completionBlock(object, error);
     });
