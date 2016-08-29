@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ProjectOxfordFace"
-  s.version          = "1.0"
+  s.version          = "1.1"
   s.summary          = "Microsoft Project Oxford Face iOS SDK"
 
   s.description  = <<-DESC
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.license          = 'MIT'
   s.author           = { "Project Oxford SDK" => "oxfordGithub@microsoft.com" }
   s.source           = { :git => "https://github.com/Microsoft/Cognitive-Face-iOS.git", :branch => "master" }
-  s.platform     = :ios, '9.0'
+  s.platform     = :ios, '8.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
