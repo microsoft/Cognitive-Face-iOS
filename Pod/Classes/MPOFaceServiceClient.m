@@ -161,7 +161,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 
 - (NSURLSessionDataTask *)verifyWithFaceId:(NSString *)faceId personId:(NSString *)personId personGroupId:(NSString *)personGroupId completionBlock:(void (^) (MPOVerifyResult *verifyResult, NSError *error))completion {
     
-    return [self startTaskWithHttpMethod:@"POST" path:@"verify" parameters:@{@"faceId" : faceId, @"personId" : personId, personGroupId: @ "personGroupId"} urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
+    return [self startTaskWithHttpMethod:@"POST" path:@"verify" parameters:@{@"faceId" : faceId, @"personId" : personId, @"personGroupId": personGroupId} urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
         
         MPOVerifyResult *verifyResult = nil;
         
