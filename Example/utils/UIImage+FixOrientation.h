@@ -29,27 +29,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+#import <UIKit/UIKit.h>
 
-#import "MPOGroupingTableViewCell.h"
-#import "MPOImageCollectionViewCell.h"
-#import "MPOGroupingFaceCellObject.h"
-@implementation MPOGroupingTableViewCell
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return [self.group count];
-}
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    MPOImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"groupCell" forIndexPath:indexPath];
-    
-    MPOGroupingFaceCellObject *obj = [self.group objectAtIndex:indexPath.row];
-
-    cell.imageView.image = obj.croppedFaceImage;
-    
-    return cell;
-}
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(70, self.collectionView.frame.size.height);
-}
-
+@interface UIImage(fixOrientation)
+- (UIImage *)fixOrientation;
 @end

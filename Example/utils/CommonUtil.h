@@ -29,9 +29,13 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-@interface MPOActivityIndicatorViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UIView *activityBackgroundView;
-
+@interface CommonUtil : NSObject
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
++ (UIImage *)imageWithColor:(UIColor *)color;
++ (NSString*)DataToJsonString:(id)object;
++ (void)simpleDialog:(NSString*)message;
++ (void)showSuccessHUD:(NSString*)message forController:(UIViewController*)controller;
++ (void)showSimpleHUD:(NSString*)message forController:(UIViewController*)controller;
 @end

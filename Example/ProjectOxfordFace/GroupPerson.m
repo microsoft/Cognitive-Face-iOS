@@ -29,8 +29,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import "GroupPerson.h"
 
-@interface MPOGroupingViewController : UIViewController
+@implementation GroupPerson
+
+-(instancetype) init {
+    self = [super init];
+    _faces = [[NSMutableArray alloc] init];
+    _personName = @"";
+    return self;
+}
 
 @end

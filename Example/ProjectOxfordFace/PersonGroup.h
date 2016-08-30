@@ -29,47 +29,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+#import <Foundation/Foundation.h>
 
-#import "MPOActivityIndicatorViewController.h"
+@interface PersonGroup : NSObject
+@property (retain, nonatomic) NSString * groupName;
+@property (retain, nonatomic) NSMutableArray * people;
+@property (retain, nonatomic) NSString * groupId;
 
-@interface MPOActivityIndicatorViewController ()
-
-@end
-
-@implementation MPOActivityIndicatorViewController
-
-- (id)init
-{
-    self = [super initWithNibName:@"MPOActivityIndicatorViewController" bundle:nil];
-    if (self) {
-        self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    }
-    return self;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.activityBackgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    
-    [self.activityBackgroundView.layer setCornerRadius:15];
-
-    // Do any additional setup after loading the view from its nib.
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
+- (instancetype) initWithGroupName: (id)name;
 @end

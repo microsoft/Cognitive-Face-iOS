@@ -31,13 +31,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MPOVerificationViewController : UIViewController <UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate>
-@property (weak, nonatomic) IBOutlet UIImageView *firstFaceImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *secondFaceImageView;
-@property (weak, nonatomic) IBOutlet UICollectionView *firstFaceCollectionView;
-@property (weak, nonatomic) IBOutlet UICollectionView *secondFaceCollectionView;
-- (IBAction)firstFaceSelectImageButtonPressed:(id)sender;
-- (IBAction)secondFaceSelectImageButtonPressed:(id)sender;
-- (IBAction)verifyButtonPressed:(id)sender;
+@interface MPOVerificationViewController : UIViewController
 
 @end

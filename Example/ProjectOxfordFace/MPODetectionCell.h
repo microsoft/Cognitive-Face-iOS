@@ -31,12 +31,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MPODetectionCollectionViewCell : UICollectionViewCell
-@property (weak, nonatomic) IBOutlet UILabel *ageLabel;
-@property (weak, nonatomic) IBOutlet UILabel *genderLabel;
-@property (weak, nonatomic) IBOutlet UILabel *headPoseLabel;
-@property (weak, nonatomic) IBOutlet UILabel *moustacheLabel;
-@property (weak, nonatomic) IBOutlet UILabel *smileLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@interface MPODetectionCell : UITableViewCell
+
+@property (nonatomic, retain) NSString *ageText;
+@property (nonatomic, retain) NSString *genderText;
+@property (nonatomic, retain) NSString *headPoseText;
+@property (nonatomic, retain) NSString *moustacheText;
+@property (nonatomic, retain) NSString *smileText;
+@property (nonatomic, retain) UIImage *faceImage;
 
 @end

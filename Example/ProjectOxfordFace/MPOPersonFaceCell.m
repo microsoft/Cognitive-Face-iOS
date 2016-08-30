@@ -29,8 +29,25 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import "MPOPersonFaceCell.h"
 
-@interface MPOGroupingViewController : UIViewController
-
+@implementation PersonFaceCell
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed:@"MPOPersonFaceCell" owner:self options:nil];
+        if (arrayOfViews.count < 1)
+        {
+            return nil;
+        }
+        if (![[arrayOfViews objectAtIndex:0] isKindOfClass:[UICollectionViewCell class]])
+        {
+            return nil;
+        }
+        self = [arrayOfViews objectAtIndex:0];
+    }
+    return self;
+}
 @end

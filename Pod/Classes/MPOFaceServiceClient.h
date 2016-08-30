@@ -153,7 +153,7 @@ typedef void (^MPOFaceListMetadataArrayCompletionBlock)(NSArray<MPOFaceListMetad
  *  @param completion                 completionHandler
  *  @return the similar faces, NSArray containg MPOSimilarFace
  */
-- (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceListId:(NSString *)faceListId maxNumOfCandidatesReturned:(NSInteger)maxNumOfCandidatesReturned mode:(NSString*)mode completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion;
+- (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceListId:(NSString *)faceListId maxNumOfCandidatesReturned:(NSInteger)maxNumOfCandidatesReturned mode:(MPOSimilarFaceSearchingMode)mode completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion;
 
 
 /**

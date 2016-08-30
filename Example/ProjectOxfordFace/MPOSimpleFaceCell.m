@@ -29,8 +29,28 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import "MPOImageCollectionViewCell.h"
+#import "MPOSimpleFaceCell.h"
 
-@implementation MPOImageCollectionViewCell
+@implementation SimpleFaceCell
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed:@"MPOSimpleFaceCell" owner:self options:nil];
+        if (arrayOfViews.count < 1)
+        {
+            return nil;
+        }
+        if (![[arrayOfViews objectAtIndex:0] isKindOfClass:[UICollectionViewCell class]])
+        {
+            return nil;
+        }
+        self = [arrayOfViews objectAtIndex:0];
+    }
+    return self;
+}
+
 
 @end

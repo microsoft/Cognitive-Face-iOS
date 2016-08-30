@@ -29,10 +29,20 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+#import <UIKit/UIKit.h>
+#import "GroupPerson.h"
+#import "PersonGroup.h"
 
-#import "MPOGroupingFaceCellObject.h"
+@interface MPOPersonFacesController : UIViewController
 
-@implementation MPOGroupingFaceCellObject
+@property(nonatomic, retain) GroupPerson * person;
+
+@property(nonatomic, retain) PersonGroup * group;
+
+@property (nonatomic, assign) BOOL * needTraining;
+
+- (instancetype) initWithGroup:(PersonGroup*) group;
+
+- (instancetype) initWithGroup:(PersonGroup *)group andPerson:(GroupPerson*)person;
 
 @end
-

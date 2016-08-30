@@ -31,10 +31,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MPODetectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UILabel *numberOfFacesDetectedLabel;
-- (IBAction)selectImageButtonPressed:(id)sender;
-- (IBAction)detectionButtonPressed:(id)sender;
+@interface MPODetectionViewController : UIViewController
+
 @end

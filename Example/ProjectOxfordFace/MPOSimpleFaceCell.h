@@ -29,41 +29,9 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import "MPODemoViewController.h"
-#import "MPODemoConstants.h"
-@interface MPODemoViewController ()
+#import <UIKit/UIKit.h>
 
-@end
-
-@implementation MPODemoViewController
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    if ([ProjectOxfordFaceSubscriptionKey isEqualToString:@"INSERT YOUR SUBSCRIPTION KEY HERE"]) {
-        
-        
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Project Oxford Subscription Key Not Entered"
-                                                                                 message:@"Please obtain an subscription key from http://projectoxford.ai and enter it in the MPODemoConstants.h file"
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
-                                                           style:UIAlertActionStyleDefault
-                                                         handler:nil];
-        [alertController addAction:okAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-
-        
-    }
-    
-	// Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+@interface MPOSimpleFaceCell : UICollectionViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end

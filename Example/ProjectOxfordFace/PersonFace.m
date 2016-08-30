@@ -28,8 +28,16 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#import <UIKit/UIKit.h>
 
-@interface MPOImageCollectionViewCell : UICollectionViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+#import "PersonFace.h"
+
+@implementation PersonFace
+
+- (instancetype) initWithImage:(UIImage*)image andFace:(MPOFace*)face {
+    self = [super init];
+    self.image = image;
+    self.face = face;
+    return self;
+}
+
 @end

@@ -29,7 +29,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef MPODemoConstants_h
-#define MPODemoConstants_h
-static NSString *const ProjectOxfordFaceSubscriptionKey = @"INSERT YOUR SUBSCRIPTION KEY HERE";
-#endif /* MPODemoConstants_h */
+#import <UIKit/UIKit.h>
+#import "PersonGroup.h"
+
+@interface MPOPersonGroupController : UIViewController
+
+@property (nonatomic, retain) PersonGroup * group;
+
+@property (nonatomic, assign) BOOL * needTraining;
+
+- (instancetype) initWithGroup: (PersonGroup*) group;
+
+@end

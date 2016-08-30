@@ -11,6 +11,21 @@
 #endif
 
 #ifdef __OBJC__
-    @import UIKit;
-    @import Foundation;
+    //@import UIKit;
+    //@import Foundation;
 #endif
+
+#import "ViewUtils.h"
+#import "CommonUtil.h"
+#import "Colours.h"
+#import "MPOAppDelegate.h"
+
+#define GLOBAL ((MPOAppDelegate*)[UIApplication sharedApplication].delegate)
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define IOS7_OR_LATER  ([[[UIDevice currentDevice] systemVersion] compare:@"7.0"] != NSOrderedAscending)
+#define STATUS_BAR_HEIGHT [[UIApplication sharedApplication] statusBarFrame].size.height
+#define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
+
+#define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
+#define NAVIGATION_BAR_HEIGHT (self.navigationController.navigationBar.frame.size.height)

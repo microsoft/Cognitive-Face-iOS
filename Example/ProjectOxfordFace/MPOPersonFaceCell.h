@@ -29,8 +29,10 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
-@interface MPODemoViewController : UIViewController
+@interface MPOPersonFaceCell : UICollectionViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *faceImageView;
+@property (weak, nonatomic) IBOutlet UILabel *personName;
 
 @end

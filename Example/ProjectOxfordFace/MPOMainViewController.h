@@ -31,6 +31,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MPOGroupingViewController : UIViewController
+@interface MPOMainViewController : UIViewController
+
 
 @end
+

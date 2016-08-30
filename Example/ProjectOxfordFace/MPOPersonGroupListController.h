@@ -29,11 +29,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+#import <UIKit/UIKit.h>
 
-#import <Foundation/Foundation.h>
-#import <ProjectOxfordFace/MPOFaceServiceClient.h>
+@interface MPOPersonGroupListController : UIViewController
 
-@interface MPOGroupingFaceCellObject : NSObject
-@property (nonatomic, strong) UIImage *croppedFaceImage;
-@property (nonatomic, strong) MPOFace *face;
 @end

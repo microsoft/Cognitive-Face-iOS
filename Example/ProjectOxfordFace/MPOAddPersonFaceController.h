@@ -28,8 +28,21 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#import <Foundation/Foundation.h>
-#import <ProjectOxfordFace/MPOFaceServiceClient.h>
-@interface MPOUtilities : NSObject
-+ (UIImage *)cropImageToFaceRectangle:(UIImage *)image faceRectangle:(MPOFaceRectangle *)faceRectangle;
+
+#import <UIKit/UIKit.h>
+#import "GroupPerson.h"
+#import "PersonGroup.h"
+
+@interface MPOAddPersonFaceController : UIViewController
+
+@property (nonatomic, assign) BOOL * needTraining;
+
+@property(nonatomic, retain) GroupPerson * person;
+
+@property(nonatomic, retain) PersonGroup * group;
+
+@property(nonatomic, retain) UIImage * image;
+
+@property(nonatomic, retain) NSMutableArray * detectedFaces;
+
 @end

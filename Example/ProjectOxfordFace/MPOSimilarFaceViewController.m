@@ -29,43 +29,44 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import "MPOGroupingViewController.h"
+#import "MPOSimilarFaceViewController.h"
 #import "UIImage+FixOrientation.h"
 #import "UIImage+Crop.h"
 #import "ImageHelper.h"
-#import "MBProgressHUD.h"
 #import "PersonFace.h"
 #import "MPOSimpleFaceCell.h"
-#import "MPOGroupSectionHeaderView.h"
+#import "MBProgressHUD.h"
 #import "PersonFace.h"
 #import <ProjectOxfordFace/MPOFaceServiceClient.h>
 
-@interface MPOGroupingViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDelegate, UICollectionViewDataSource> {
-    NSMutableArray * _faces;
-    UICollectionView * _imageContainer;
-    UICollectionView * _resultContainer;
-    UIButton * _groupBtn;
+@interface MPOSimilarFaceViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDelegate, UICollectionViewDataSource> {
+    NSMutableArray<PersonFace*> * _selectedFaces;
+    NSMutableArray<PersonFace*> * _baseFaces;
+    UICollectionView * _imageContainer0;
+    UICollectionView * _imageContainer1;
+    UIScrollView * _resultContainer;
+    UIButton * _findBtn;
     UILabel * _imageCountLabel;
-    BOOL _messyGroupExists;
-    
-    NSMutableArray<NSArray *> * _resultGroups;
+    NSInteger _selectIndex;
+    NSInteger _selectedTargetIndex;
 }
 
 @end
 
-@implementation MPOGroupingViewController
+@implementation MPOSimilarFaceViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = @"Grouping";
+    self.navigationItem.title = @"Find Similar Faces";
     [self buildMainUI];
-    _faces = [[NSMutableArray alloc] init];
-    _resultGroups = [[NSMutableArray alloc] init];
-    _messyGroupExists = FALSE;
+    _baseFaces = [[NSMutableArray alloc] init];
+    _selectedFaces = [[NSMutableArray alloc] init];
+    _selectedTargetIndex = -1;
 }
 
 - (void)chooseImage: (id)sender {
+    _selectIndex = [(UIView*)sender tag];
     UIActionSheet * choose_photo_sheet = [[UIActionSheet alloc]
                                           initWithTitle:@"Select Image"
                                           delegate:self
@@ -91,68 +92,61 @@
     [self presentViewController:ipc animated:YES completion:nil];
 }
 
-- (void)groupFaces: (id)sender {
-    
+- (void)findSimilarFace: (id)sender {
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:HUD];
-    HUD.labelText = @"Grouping faces";
+    HUD.labelText = @"Finding similar faces";
     [HUD show: YES];
     
     NSMutableArray *faceIds = [[NSMutableArray alloc] init];
     
-    for (PersonFace *obj in _faces) {
+    for (PersonFace *obj in _selectedFaces) {
         [faceIds addObject:obj.face.faceId];
     }
     
-    [_resultGroups removeAllObjects];
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:ProjectOxfordFaceSubscriptionKey];
-    [client groupWithFaceIds:faceIds completionBlock:^(MPOGroupResult *groupResult, NSError *error) {
-        //add all of the normal group members if they exist
-        
+    
+    [client findSimilarWithFaceId:_baseFaces[_selectedTargetIndex].face.faceId faceIds:faceIds completionBlock:^(NSArray<MPOSimilarFace *> *collection, NSError *error) {
         [HUD removeFromSuperview];
+        
         if (error) {
-            [CommonUtil showSimpleHUD:@"Grouping failed" forController:self.navigationController];
+            [CommonUtil showSimpleHUD:@"Failed to find similar faces" forController:self.navigationController];
             return;
         }
         
-        for (NSArray *group in groupResult.groups) {
-            NSMutableArray *currentGroup = [[NSMutableArray alloc] init];
-            for (NSString *faceId in group) {
-                [currentGroup addObject:[self faceForId:faceId]];
-            }
-            [_resultGroups addObject:currentGroup.copy];
+        for (UIView * v in _resultContainer.subviews) {
+            [v removeFromSuperview];
         }
-        
-        //add all of the messey group members if they exist
-        if (groupResult.messeyGroup.count != 0) {
-            NSMutableArray *allGroupsMessyGroup = [[NSMutableArray alloc] init];
-            for (NSString *faceId in groupResult.messeyGroup) {
-                [allGroupsMessyGroup addObject:[self faceForId:faceId]];
-            }
-            [_resultGroups addObject:allGroupsMessyGroup.copy];
-            _messyGroupExists = TRUE;
+        for (int i = 0; i < collection.count; i++) {
+            MPOSimilarFace * result = collection[i];
+            UIImageView * imageView = [[UIImageView alloc] initWithImage:((PersonFace*)[self faceForId:result.faceId]).image];
+            imageView.width = _resultContainer.width / 6;
+            imageView.height = imageView.width;
+            imageView.left = 5;
+            imageView.top = 5 + (imageView.height + 5) * i;
+            imageView.clipsToBounds = YES;
+            imageView.contentMode = UIViewContentModeScaleAspectFit;
+            
+            UILabel * label = [[UILabel alloc] init];
+            label.text = [NSString stringWithFormat:@"confidence: %f", result.confidence.floatValue];
+            [label sizeToFit];
+            label.center = imageView.center;
+            label.left = imageView.right + 30;
+            
+            [_resultContainer addSubview:imageView];
+            [_resultContainer addSubview:label];
         }
-        else {
-            _messyGroupExists = FALSE;
-        }
-        
-        [_resultContainer reloadData];
+        _resultContainer.contentSize = CGSizeMake(_resultContainer.width, 5 + collection.count * (5 + _resultContainer.width / 6));
     }];
 }
 
 - (PersonFace*)faceForId:(NSString*)faceId {
-    for (PersonFace * face in _faces) {
+    for (PersonFace * face in _selectedFaces) {
         if ([face.face.faceId isEqualToString:faceId]) {
             return face;
         }
     }
     return nil;
-}
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)buildMainUI {
@@ -166,75 +160,105 @@
     [label sizeToFit];
     
     UIImage * btnBackImage = [CommonUtil imageWithColor:[UIColor robinEggColor]];
-    UIButton * selectImgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    selectImgBtn.titleLabel.numberOfLines = 0;
-    [selectImgBtn setTitle:@"Add Faces" forState:UIControlStateNormal];
-    selectImgBtn.width = SCREEN_WIDTH / 3 - 20;
-    selectImgBtn.height = selectImgBtn.width * 3 / 7;
-    selectImgBtn.titleEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
-    selectImgBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    [selectImgBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
-    [selectImgBtn addTarget:self action:@selector(chooseImage:) forControlEvents:UIControlEventTouchUpInside];
-    label.width = selectImgBtn.width;
+    UIButton * addFacesBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    addFacesBtn.titleLabel.numberOfLines = 0;
+    [addFacesBtn setTitle:@"Add Faces" forState:UIControlStateNormal];
+    addFacesBtn.width = SCREEN_WIDTH / 3 - 20;
+    addFacesBtn.height = addFacesBtn.width * 3 / 7;
+    addFacesBtn.titleEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+    addFacesBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [addFacesBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
+    label.width = addFacesBtn.width;
     label.adjustsFontSizeToFitWidth = YES;
     
     _imageCountLabel = [[UILabel alloc] init];
     _imageCountLabel.text = @"0 faces in total";
     _imageCountLabel.left = 20;
-    _imageCountLabel.top = label.bottom + 2;
+    _imageCountLabel.top = label.bottom;
     [scrollView addSubview:_imageCountLabel];
     [_imageCountLabel sizeToFit];
-    _imageCountLabel.width = selectImgBtn.width;
+    _imageCountLabel.width = addFacesBtn.width;
     _imageCountLabel.adjustsFontSizeToFitWidth = YES;
     
-    
     UICollectionViewFlowLayout *flowLayout =[[UICollectionViewFlowLayout alloc] init];
-    _imageContainer = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
-    _imageContainer.width = SCREEN_WIDTH - selectImgBtn.width - 20 - 10 - 20;
-    _imageContainer.height = _imageContainer.width * 4 / 5;
-    _imageContainer.top = 20;
-    _imageContainer.right = SCREEN_WIDTH - 20;
-    _imageContainer.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_imageContainer registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
-    _imageContainer.dataSource = self;
-    _imageContainer.delegate = self;
+    _imageContainer0 = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
+    _imageContainer0.width = SCREEN_WIDTH - addFacesBtn.width - 20 - 10 - 20;
+    _imageContainer0.height = _imageContainer0.width * 3 / 5;
+    _imageContainer0.top = 20;
+    _imageContainer0.right = SCREEN_WIDTH - 20;
+    _imageContainer0.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+    [_imageContainer0 registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+    _imageContainer0.dataSource = self;
+    _imageContainer0.delegate = self;
     
-    selectImgBtn.center = _imageContainer.center;
+    addFacesBtn.center = _imageContainer0.center;
+    addFacesBtn.left = 20;
+    addFacesBtn.tag = 0;
+    [addFacesBtn addTarget:self action:@selector(chooseImage:) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:addFacesBtn];
+    [scrollView addSubview:_imageContainer0];
+    
+    label = [[UILabel alloc] init];
+    label.text = @"Target face:";
+    label.left = 20;
+    label.top = _imageContainer0.bottom + 10;
+    [scrollView addSubview:label];
+    [label sizeToFit];
+    
+    UIButton * selectImgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    selectImgBtn.titleLabel.numberOfLines = 0;
+    [selectImgBtn setTitle:@"Select Image" forState:UIControlStateNormal];
+    selectImgBtn.width = SCREEN_WIDTH / 3 - 20;
+    selectImgBtn.height = selectImgBtn.width * 3 / 7;
+    selectImgBtn.titleEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+    selectImgBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [selectImgBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
+    selectImgBtn.tag = 1;
+    [selectImgBtn addTarget:self action:@selector(chooseImage:) forControlEvents:UIControlEventTouchUpInside];
+    label.width = selectImgBtn.width;
+    label.adjustsFontSizeToFitWidth = YES;
+    
+    flowLayout =[[UICollectionViewFlowLayout alloc] init];
+    _imageContainer1 = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
+    _imageContainer1.width = SCREEN_WIDTH - selectImgBtn.width - 20 - 10 - 20;
+    _imageContainer1.height = _imageContainer1.width * 1 / 2;
+    _imageContainer1.top = label.top;
+    _imageContainer1.right = SCREEN_WIDTH - 20;
+    _imageContainer1.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+    [_imageContainer1 registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+    _imageContainer1.dataSource = self;
+    _imageContainer1.delegate = self;
+    
+    selectImgBtn.center = _imageContainer1.center;
     selectImgBtn.left = 20;
     [scrollView addSubview:selectImgBtn];
-    [scrollView addSubview:_imageContainer];
+    [scrollView addSubview:_imageContainer1];
     
     label = [[UILabel alloc] init];
     label.text = @"Result:";
     [label sizeToFit];
     label.left = 20;
-    label.top = _imageContainer.bottom + 10;
+    label.top = _imageContainer1.bottom + 10;
     [scrollView addSubview:label];
     
-    flowLayout =[[UICollectionViewFlowLayout alloc] init];
-    [flowLayout setSectionInset:UIEdgeInsetsMake(5, 5, 5, 5)];
-    _resultContainer = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
+    _resultContainer = [[UIScrollView alloc] init];
     _resultContainer.width = SCREEN_WIDTH - 20 - 20;
+    _resultContainer.height = _imageContainer0.width * 5 / 7;
     _resultContainer.top = label.bottom + 5;
     _resultContainer.left = 20;
     _resultContainer.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_resultContainer registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
-    [_resultContainer registerClass:[MPOGroupSectionHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"faceSectionHeader"];
-    _resultContainer.dataSource = self;
-    _resultContainer.delegate = self;
     [scrollView addSubview:_resultContainer];
     
-    _groupBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _groupBtn.height = selectImgBtn.height;
-    _groupBtn.width = SCREEN_WIDTH / 2 - 25;
-    [_groupBtn setTitle:@"Grouping" forState:UIControlStateNormal];
-    [_groupBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
-    _groupBtn.left = 20;
-    _groupBtn.bottom = self.view.height - NAVIGATION_BAR_HEIGHT - STATUS_BAR_HEIGHT - 20;
-    _groupBtn.enabled = NO;
-    [_groupBtn addTarget:self action:@selector(groupFaces:) forControlEvents:UIControlEventTouchUpInside];
-    _resultContainer.height = _groupBtn.top - _resultContainer.top - 20;
-    [scrollView addSubview:_groupBtn];
+    _findBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _findBtn.height = selectImgBtn.height;
+    _findBtn.width = SCREEN_WIDTH / 2 - 25;
+    [_findBtn setTitle:@"Find Similar Faces" forState:UIControlStateNormal];
+    [_findBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
+    _findBtn.left = 20;
+    _findBtn.top = _resultContainer.bottom + 30;
+    _findBtn.enabled = NO;
+    [_findBtn addTarget:self action:@selector(findSimilarFace:) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:_findBtn];
     
     UIButton * logBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     logBtn.height = selectImgBtn.height;
@@ -242,21 +266,25 @@
     [logBtn setTitle:@"View Log" forState:UIControlStateNormal];
     [logBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
     logBtn.right = SCREEN_WIDTH - 20;
-    logBtn.bottom = _groupBtn.bottom;
+    logBtn.top = _resultContainer.bottom + 30;
     [scrollView addSubview:logBtn];
     
     scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, logBtn.bottom + 20);
     [self.view addSubview:scrollView];
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
+    if (buttonIndex == 0)
         [self pickImage];
-    } else if (buttonIndex == 1) {
+    else if (buttonIndex == 1)
         [self snapImage];
-    }
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -268,11 +296,12 @@
     else
         _selectedImage = info[UIImagePickerControllerOriginalImage];
     [_selectedImage fixOrientation];
+    
     [picker dismissViewControllerAnimated:YES completion:nil];
     
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:HUD];
-    HUD.labelText = @"detecting faces";
+    HUD.labelText = @"Detecting faces";
     [HUD show: YES];
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:ProjectOxfordFaceSubscriptionKey];
@@ -280,21 +309,31 @@
     [client detectWithData:data returnFaceId:YES returnFaceLandmarks:YES returnFaceAttributes:@[] completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
         [HUD removeFromSuperview];
         if (error) {
-            [CommonUtil showSimpleHUD:@"detection failed" forController:self.navigationController];
+            [CommonUtil showSimpleHUD:@"Detection failed" forController:self.navigationController];
             return;
         }
+        
+        NSMutableArray * faces = [[NSMutableArray alloc] init];
+        
         for (MPOFace *face in collection) {
             UIImage *croppedImage = [_selectedImage crop:CGRectMake(face.faceRectangle.left.floatValue, face.faceRectangle.top.floatValue, face.faceRectangle.width.floatValue, face.faceRectangle.height.floatValue)];
             PersonFace *obj = [[PersonFace alloc] init];
             obj.image = croppedImage;
             obj.face = face;
-            [_faces addObject:obj];
+            [faces addObject:obj];
         }
-        [_imageContainer reloadData];
-        if (_faces.count > 0) {
-            _groupBtn.enabled = YES;
+        
+        if (_selectIndex == 0) {
+            [_selectedFaces addObjectsFromArray:faces];
+        } else {
+            [_baseFaces removeAllObjects];
+            [_baseFaces addObjectsFromArray:faces];
+            _findBtn.enabled = NO;
+            _selectedTargetIndex = -1;
         }
-        _imageCountLabel.text =  [NSString stringWithFormat:@"%d faces in total", (int32_t)_faces.count];
+        _imageCountLabel.text =  [NSString stringWithFormat:@"%ld faces in total", _selectedFaces.count];
+        [_imageContainer0 reloadData];
+        [_imageContainer1 reloadData];
     }];
 }
 
@@ -313,41 +352,32 @@
     }
 }
 
+
 #pragma mark -CollectionView datasource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    if (collectionView == _imageContainer) {
-        return 1;
-    } else {
-        return _resultGroups.count;
-    }
+    return 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (collectionView == _imageContainer) {
-        return _faces.count;
-    } else {
-        return _resultGroups[section].count;
-    }
+    return collectionView == _imageContainer0 ? _selectedFaces.count : _baseFaces.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     MPOSimpleFaceCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"faceCell" forIndexPath:indexPath];
-    if (collectionView == _imageContainer) {
-        cell.imageView.image = ((PersonFace*)_faces[indexPath.row]).image;
-    } else {
-        cell.imageView.image = ((PersonFace*)_resultGroups[indexPath.section][indexPath.row]).image;
+    cell.layer.borderWidth = 0;
+    NSArray * faces = (collectionView == _imageContainer0) ? _selectedFaces : _baseFaces;
+    cell.imageView.image = ((PersonFace*)faces[indexPath.row]).image;
+    if (collectionView == _imageContainer1 && indexPath.row == _selectedTargetIndex) {
+        cell.layer.borderWidth = 2;
+        cell.layer.borderColor = [[UIColor redColor] CGColor];
     }
     return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (collectionView == _imageContainer) {
-        return CGSizeMake(_imageContainer.width / 3 - 10, _imageContainer.width / 3 - 10);
-    } else {
-        return CGSizeMake(_resultContainer.width / 5 - 10, _resultContainer.width / 5 - 10);
-    }
+    return CGSizeMake(collectionView.width / 3 - 10, collectionView.width / 3 - 10);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
@@ -358,33 +388,12 @@
     return 10;
 }
 
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    if (collectionView == _imageContainer) {
-        return CGSizeMake(0, 0);
-    }
-    return CGSizeMake(_resultContainer.width, 30);
-}
-
-- (UICollectionReusableView *) collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    UICollectionReusableView * reusableview = nil;
-    if (collectionView == _imageContainer) {
-        return nil;
-    }
-    if (kind == UICollectionElementKindSectionHeader) {
-        MPOGroupSectionHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"faceSectionHeader" forIndexPath:indexPath];
-        
-        if (indexPath.section == _resultGroups.count - 1 && _messyGroupExists) {
-            headerView.title = @"Messy Group:";
-        } else {
-            headerView.title = [NSString stringWithFormat:@"Group %ld:", indexPath.section + 1];
-        }
-        
-        reusableview = headerView;
-    }
-    return reusableview;
-}
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    _selectedTargetIndex = indexPath.row;
+    [_imageContainer1 reloadData];
+    if (_selectedFaces.count > 0) {
+        _findBtn.enabled = YES;
+    }
 }
 
 /*

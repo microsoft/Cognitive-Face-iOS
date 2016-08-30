@@ -29,21 +29,32 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import "MPOUtilities.h"
-@implementation MPOUtilities
-+ (UIImage *)cropImageToFaceRectangle:(UIImage *)image faceRectangle:(MPOFaceRectangle *)faceRectangle {
-    CGRect rect = CGRectMake(0, 0, 0, 0);
-    rect.size.width = [faceRectangle.width integerValue];
-    rect.size.height = [faceRectangle.height integerValue];
-    rect.origin.y = [faceRectangle.top integerValue];
-    rect.origin.x = [faceRectangle.left integerValue];
-    
-    CGImageRef imageRef = CGImageCreateWithImageInRect ([image CGImage], rect);
-    
-    UIImage *croppedImage = [UIImage imageWithCGImage: imageRef];
-    
-    CGImageRelease (imageRef);
-    
-    return croppedImage;
+#import "MPOGroupSectionHeaderView.h"
+
+@implementation MPOGroupSectionHeaderView {
+    UILabel * label;
 }
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        label = [[UILabel alloc] init];
+        label.font = [UIFont systemFontOfSize:16];
+        label.top = 5;
+        label.left = 10;
+        label.text = @"";
+        [label sizeToFit];
+        [self addSubview:label];
+    }
+    return self;
+}
+
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    label.text = title;
+    [label sizeToFit];
+    label.top = (self.height - label.height) / 2;
+}
+
 @end
