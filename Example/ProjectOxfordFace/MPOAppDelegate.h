@@ -53,6 +53,5 @@ static NSString *const ProjectOxfordFaceSubscriptionKey = @"dab493b86e034b03b0a7
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
-- (void)initFaceSDK;
 
 @end

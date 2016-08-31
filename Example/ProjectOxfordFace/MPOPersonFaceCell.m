@@ -31,7 +31,7 @@
 
 #import "MPOPersonFaceCell.h"
 
-@implementation PersonFaceCell
+@implementation MPOPersonFaceCell
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

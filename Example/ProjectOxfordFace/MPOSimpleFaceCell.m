@@ -31,7 +31,7 @@
 
 #import "MPOSimpleFaceCell.h"
 
-@implementation SimpleFaceCell
+@implementation MPOSimpleFaceCell
 
 - (id)initWithFrame:(CGRect)frame
 {

@@ -50,7 +50,6 @@
 		7B643BC81D5F467B0012F342 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B643BBC1D5F467B0012F342 /* UIViewController+DismissKeyboard.m */; };
 		7B643BCA1D5F467B0012F342 /* ViewUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B643BC01D5F467B0012F342 /* ViewUtils.m */; };
 		7B643BCB1D5F467B0012F342 /* CommonUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B643BC21D5F467B0012F342 /* CommonUtil.m */; };
-		7B643BCE1D5F47B60012F342 /* FaceSdkMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B643BCD1D5F47B60012F342 /* FaceSdkMobile.framework */; };
 		7B643BD51D6041E00012F342 /* MPODetectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B643BD41D6041E00012F342 /* MPODetectionCell.m */; };
 		7B643BDB1D60604A0012F342 /* MPOGroupSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B643BDA1D60604A0012F342 /* MPOGroupSectionHeaderView.m */; };
 		EF575B0F1C6872540021A3AD /* DetectTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = EF575B061C6872540021A3AD /* DetectTestCase.m */; };
@@ -197,7 +196,6 @@
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
 				50F08410AD7D895D49D6DAEC /* Pods_ProjectOxfordFace_Example.framework in Frameworks */,
-				7B643BCE1D5F47B60012F342 /* FaceSdkMobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -822,10 +820,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/FaceSDK",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ProjectOxfordFace/ProjectOxfordFace-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/FaceSDK/FaceSdkMobile.framework/Headers";
@@ -847,10 +842,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/FaceSDK",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ProjectOxfordFace/ProjectOxfordFace-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/FaceSDK/FaceSdkMobile.framework/Headers";

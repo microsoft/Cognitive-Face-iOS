@@ -118,7 +118,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:showUserInfoCellIdentifier];
     }
-    cell.textLabel.text = ((TestGroup*)GLOBAL.groups[indexPath.row]).groupName;
+    cell.textLabel.text = ((PersonGroup*)GLOBAL.groups[indexPath.row]).groupName;
     cell.backgroundColor = [UIColor clearColor];
     return cell;
 }

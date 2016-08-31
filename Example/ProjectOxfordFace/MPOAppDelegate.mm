@@ -30,8 +30,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #import "MPOAppDelegate.h"
-#import "FaceDetectionJDAInterface.h"
-#import "FaceRecognitionInterface.h"
 
 @implementation MPOAppDelegate
 
@@ -70,24 +68,6 @@
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-
-- (void) initFaceSDK {
-    if (!GLOBAL.jdaDetector) {
-        NSBundle * bundle = [NSBundle mainBundle];
-        NSString * file = [bundle pathForResource:@"DetectionJDA" ofType:@"mdl"];
-        GLOBAL.mdl = [NSData dataWithContentsOfFile:[file stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        long len = GLOBAL.mdl.length;
-        uint8_t* mdlBuffer= (uint8_t*) [GLOBAL.mdl bytes];
-        GLOBAL.jdaDetector = CreateFaceDetectionJDA(mdlBuffer, (int)len, 0, false, 1);
-        
-        file = [bundle pathForResource:@"RecognitionCNNMobile" ofType:@"mdl"];
-        
-        GLOBAL.recomdl = [NSData dataWithContentsOfFile:[file stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        len = GLOBAL.recomdl.length;
-        mdlBuffer = (uint8_t*) [GLOBAL.recomdl bytes];
-        GLOBAL.recognizer = CreateFaceRecognitionCNN(mdlBuffer, (int)len);
-    }
-}
 
 - (NSURL *)applicationDocumentsDirectory {
     // The directory the application uses to store the Core Data store file. This code uses a directory named "ms.FaceSdkSample" in the application's documents directory.

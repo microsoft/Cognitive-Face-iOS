@@ -380,7 +380,7 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:groupCellIdentifier];
         }
-        cell.textLabel.text = ((TestGroup*)GLOBAL.groups[indexPath.row]).groupName;
+        cell.textLabel.text = ((PersonGroup*)GLOBAL.groups[indexPath.row]).groupName;
         cell.backgroundColor = [UIColor clearColor];
         return cell;
     } else {

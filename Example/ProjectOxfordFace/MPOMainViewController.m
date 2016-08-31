@@ -48,7 +48,6 @@
     backItem.title = @"back";
     self.navigationItem.backBarButtonItem = backItem;
     [self buildMainUI];
-    [GLOBAL initFaceSDK];
 }
 
 - (void)buildMainUI {
