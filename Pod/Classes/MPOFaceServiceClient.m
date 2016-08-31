@@ -161,7 +161,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 
 - (NSURLSessionDataTask *)verifyWithFaceId:(NSString *)faceId personId:(NSString *)personId personGroupId:(NSString *)personGroupId completionBlock:(void (^) (MPOVerifyResult *verifyResult, NSError *error))completion {
     
-    return [self startTaskWithHttpMethod:@"POST" path:@"verify" parameters:@{@"faceId" : faceId, @"personId" : personId, personGroupId: @ "personGroupId"} urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
+    return [self startTaskWithHttpMethod:@"POST" path:@"verify" parameters:@{@"faceId" : faceId, @"personId" : personId, @"personGroupId": personGroupId} urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
         
         MPOVerifyResult *verifyResult = nil;
         
@@ -200,12 +200,12 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 //return SimilarFace[]
 - (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceIds:(NSArray *)faceIds completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion {
     
-    return [self findSimilarWithFaceId:faceId faceListId:nil faceIds:faceIds maxNumOfCandidatesReturned:20 mode:@"matchPerson" completionBlock:completion];
+    return [self findSimilarWithFaceId:faceId faceListId:nil faceIds:faceIds maxNumOfCandidatesReturned:20 mode:MPOSimilarFaceSearchingModeMatchPerson completionBlock:completion];
 }
 
 - (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceListId:(NSString *)faceListId completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion {
     
-    return [self findSimilarWithFaceId:faceId faceListId:faceListId faceIds:nil maxNumOfCandidatesReturned:20 mode:@"matchPerson" completionBlock:completion];
+    return [self findSimilarWithFaceId:faceId faceListId:faceListId faceIds:nil maxNumOfCandidatesReturned:20 mode:MPOSimilarFaceSearchingModeMatchPerson completionBlock:completion];
 }
 
 - (NSURLSessionDataTask *)findSimilarWithFaceId:(NSString *)faceId faceListId:(NSString *)faceListId faceIds:(NSArray *)faceIds maxNumOfCandidatesReturned:(NSInteger)maxNumOfCandidatesReturned mode:(MPOSimilarFaceSearchingMode)mode completionBlock:(MPOSimilarFaceArrayCompletionBlock)completion {
@@ -223,7 +223,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
         if (!error) {
             for (id faceObj in responseObject) {
                 NSString *faceId = faceObj[@"faceId"];
-                NSString *confidence = faceObj[@"confidence"];
+                NSNumber *confidence = faceObj[@"confidence"];
                 MPOSimilarFace *similarFace = [[MPOSimilarFace alloc] init];
                 similarFace.faceId = faceId;
                 similarFace.confidence = confidence;
@@ -315,7 +315,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 }
 
 - (NSURLSessionDataTask *)listPersonGroupsWithStart:(NSString*)start top:(NSInteger)top completionBlock:(MPOPersonGroupArrayCompletionBlock)completion {
-    NSString * url = [NSString stringWithFormat:@"persongroups?top=%d", top];
+    NSString * url = [NSString stringWithFormat:@"persongroups?top=%ld", top];
     if (start != nil) {
         url = [url stringByAppendingString:[NSString stringWithFormat:@"&start=%@", start]];
     }
