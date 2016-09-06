@@ -174,7 +174,7 @@
     
     _detectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _detectBtn.height = selectImgBtn.height;
-    _detectBtn.width = SCREEN_WIDTH / 2 - 25;
+    _detectBtn.width = SCREEN_WIDTH - 40;
     [_detectBtn setTitle:@"Detect" forState:UIControlStateNormal];
     [_detectBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
     _detectBtn.left = 20;
@@ -182,15 +182,6 @@
     [_detectBtn addTarget:self action:@selector(detectAction:) forControlEvents:UIControlEventTouchUpInside];
     _detectBtn.enabled = NO;
     [scrollView addSubview:_detectBtn];
-    
-    UIButton * logBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    logBtn.height = selectImgBtn.height;
-    logBtn.width = SCREEN_WIDTH / 2 - 25;
-    [logBtn setTitle:@"View Log" forState:UIControlStateNormal];
-    [logBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
-    logBtn.right = SCREEN_WIDTH - 20;
-    logBtn.top = _detectBtn.top;
-    [scrollView addSubview:logBtn];
     
     _resultTableView = [[UITableView alloc] init];
     _resultTableView.width = SCREEN_WIDTH - 20 - 20;
@@ -204,7 +195,7 @@
     [_resultTableView registerClass:[MPODetectionCell class] forCellReuseIdentifier:@"detectionCell"];
     [scrollView addSubview:_resultTableView];
     
-    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, logBtn.bottom + 20);
+    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, _detectBtn.bottom + 20);
     [self.view addSubview:scrollView];
 }
 

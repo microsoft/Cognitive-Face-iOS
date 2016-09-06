@@ -75,24 +75,14 @@
     UIImage * btnBackImage = [CommonUtil imageWithColor:[UIColor robinEggColor]];
     UIButton * addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     addBtn.height = (self.view.height - NAVIGATION_BAR_HEIGHT) *3 / 32;
-    addBtn.width = SCREEN_WIDTH / 2 - 25;
+    addBtn.width = SCREEN_WIDTH - 40;
     [addBtn setTitle:@"Add Group" forState:UIControlStateNormal];
     [addBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
     addBtn.left = 20;
     addBtn.top = _groupListView.bottom + 20;
     [addBtn addTarget:self action:@selector(addGroupAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton * logBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    logBtn.height = addBtn.height;
-    logBtn.width = SCREEN_WIDTH / 2 - 25;
-    [logBtn setTitle:@"Save" forState:UIControlStateNormal];
-    [logBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
-    logBtn.right = SCREEN_WIDTH - 20;
-    
-    logBtn.top = addBtn.top;
-    
     [self.view addSubview:addBtn];
-    [self.view addSubview:logBtn];
 }
 
 - (void)didReceiveMemoryWarning {

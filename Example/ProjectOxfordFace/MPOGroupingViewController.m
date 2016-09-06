@@ -226,7 +226,7 @@
     
     _groupBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _groupBtn.height = selectImgBtn.height;
-    _groupBtn.width = SCREEN_WIDTH / 2 - 25;
+    _groupBtn.width = SCREEN_WIDTH - 40;
     [_groupBtn setTitle:@"Grouping" forState:UIControlStateNormal];
     [_groupBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
     _groupBtn.left = 20;
@@ -236,16 +236,7 @@
     _resultContainer.height = _groupBtn.top - _resultContainer.top - 20;
     [scrollView addSubview:_groupBtn];
     
-    UIButton * logBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    logBtn.height = selectImgBtn.height;
-    logBtn.width = SCREEN_WIDTH / 2 - 25;
-    [logBtn setTitle:@"View Log" forState:UIControlStateNormal];
-    [logBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
-    logBtn.right = SCREEN_WIDTH - 20;
-    logBtn.bottom = _groupBtn.bottom;
-    [scrollView addSubview:logBtn];
-    
-    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, logBtn.bottom + 20);
+    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, _groupBtn.bottom + 20);
     [self.view addSubview:scrollView];
 }
 

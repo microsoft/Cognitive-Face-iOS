@@ -265,26 +265,16 @@
     
     _identifyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _identifyBtn.height = addFacesBtn.height;
-    _identifyBtn.width = SCREEN_WIDTH / 2 - 25;
+    _identifyBtn.width = SCREEN_WIDTH - 40;
     [_identifyBtn setTitle:@"Identify" forState:UIControlStateNormal];
     [_identifyBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
     _identifyBtn.left = 20;
     _identifyBtn.top = _resultListView.bottom + 30;
     _identifyBtn.enabled = NO;
     [_identifyBtn addTarget:self action:@selector(identify:) forControlEvents:UIControlEventTouchUpInside];
-    
     [scrollView addSubview:_identifyBtn];
-    
-    UIButton * logBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    logBtn.height = addFacesBtn.height;
-    logBtn.width = SCREEN_WIDTH / 2 - 25;
-    [logBtn setTitle:@"View Log" forState:UIControlStateNormal];
-    [logBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
-    logBtn.right = SCREEN_WIDTH - 20;
-    logBtn.top = _resultListView.bottom + 30;
-    [scrollView addSubview:logBtn];
-    
-    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, logBtn.bottom + 20);
+
+    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, _identifyBtn.bottom + 20);
     [self.view addSubview:scrollView];
 }
 

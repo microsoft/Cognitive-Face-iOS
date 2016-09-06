@@ -251,7 +251,7 @@
     
     _findBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _findBtn.height = selectImgBtn.height;
-    _findBtn.width = SCREEN_WIDTH / 2 - 25;
+    _findBtn.width = SCREEN_WIDTH - 40;
     [_findBtn setTitle:@"Find Similar Faces" forState:UIControlStateNormal];
     [_findBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
     _findBtn.left = 20;
@@ -260,16 +260,7 @@
     [_findBtn addTarget:self action:@selector(findSimilarFace:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:_findBtn];
     
-    UIButton * logBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    logBtn.height = selectImgBtn.height;
-    logBtn.width = SCREEN_WIDTH / 2 - 25;
-    [logBtn setTitle:@"View Log" forState:UIControlStateNormal];
-    [logBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
-    logBtn.right = SCREEN_WIDTH - 20;
-    logBtn.top = _resultContainer.bottom + 30;
-    [scrollView addSubview:logBtn];
-    
-    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, logBtn.bottom + 20);
+    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, _findBtn.bottom + 20);
     [self.view addSubview:scrollView];
 }
 

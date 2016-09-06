@@ -143,7 +143,7 @@
     
     _verifyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _verifyBtn.height = selectImgBtn0.height;
-    _verifyBtn.width = SCREEN_WIDTH / 2 - 25;
+    _verifyBtn.width = SCREEN_WIDTH - 40;
     [_verifyBtn setTitle:@"Verify" forState:UIControlStateNormal];
     [_verifyBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
     _verifyBtn.left = 20;
@@ -152,16 +152,7 @@
     [_verifyBtn addTarget:self action:@selector(verify:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:_verifyBtn];
     
-    UIButton * logBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    logBtn.height = selectImgBtn0.height;
-    logBtn.width = SCREEN_WIDTH / 2 - 25;
-    [logBtn setTitle:@"View Log" forState:UIControlStateNormal];
-    [logBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
-    logBtn.right = SCREEN_WIDTH - 20;
-    logBtn.top = _imageContainer1.bottom + 30;
-    [scrollView addSubview:logBtn];
-    
-    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, logBtn.bottom + 20);
+    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, _verifyBtn.bottom + 20);
     [self.view addSubview:scrollView];
 }
 
