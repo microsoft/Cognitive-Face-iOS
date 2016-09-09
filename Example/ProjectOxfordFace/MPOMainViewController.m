@@ -135,6 +135,10 @@
     
     scrollView.contentSize = CGSizeMake(scrollView.width, identificationBtn.bottom + 20);
     [self.view addSubview:scrollView];
+    
+    if ([ProjectOxfordFaceSubscriptionKey isEqualToString:@"Your Subscription Key"]) {
+        [CommonUtil simpleDialog:@"You haven't inserted the Subscription Key"];
+    }
 }
 
 - (void)detectionAction:(id)sender {
