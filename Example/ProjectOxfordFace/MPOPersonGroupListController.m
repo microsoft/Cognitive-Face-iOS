@@ -56,6 +56,7 @@
 
 - (void)addGroupAction: (id)sender {
     MPOPersonGroupController * controller = [[MPOPersonGroupController alloc] init];
+    controller.isForVarification = self.isForVarification;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -115,6 +116,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MPOPersonGroupController * controller = [[MPOPersonGroupController alloc] initWithGroup:GLOBAL.groups[indexPath.row]];
+    controller.isForVarification = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 

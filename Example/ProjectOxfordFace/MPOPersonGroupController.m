@@ -37,6 +37,7 @@
 #import "PersonFace.h"
 #import "MBProgressHUD.h"
 #import "CommonUtil.h"
+#import "MPOVerificationViewController.h"
 
 #define INTENSION_SAVE_GROUP   0
 #define INTENSION_ADD_PERSON   1
@@ -86,6 +87,7 @@
                                          cancelButtonTitle:@"Cancel"
                                          destructiveButtonTitle:nil
                                          otherButtonTitles:@"Yes",nil];
+        confirm_sheet.tag = 0;
         [confirm_sheet showInView:self.view];
     }
 }
@@ -201,7 +203,7 @@
     _facesCollectionView.left = 10;
     _facesCollectionView.top = _groupNameField.bottom + 10;
     _facesCollectionView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_facesCollectionView registerNib:[UINib nibWithNibName:@"PersonFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+    [_facesCollectionView registerNib:[UINib nibWithNibName:@"MPOPersonFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
     _facesCollectionView.dataSource = self;
     _facesCollectionView.delegate = self;
     [self.view addSubview:_facesCollectionView];
@@ -295,22 +297,39 @@
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:ProjectOxfordFaceSubscriptionKey];
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        [self.navigationController.view addSubview:HUD];
-        HUD.labelText = @"Deleting this person";
-        [HUD show: YES];
-        
-        [client deletePersonWithPersonGroupId:self.group.groupId personId:((GroupPerson*)self.group.people[_selectedPersonIndex]).personId completionBlock:^(NSError *error) {
-            [HUD removeFromSuperview];
-            if (error) {
-                [CommonUtil showSimpleHUD:@"Failed in deleting this person" forController:self.navigationController];
-                return;
+    if (actionSheet.tag == 0) {
+        if (buttonIndex == 0) {
+            MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:ProjectOxfordFaceSubscriptionKey];
+            MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.navigationController.view addSubview:HUD];
+            HUD.labelText = @"Deleting this person";
+            [HUD show: YES];
+            
+            [client deletePersonWithPersonGroupId:self.group.groupId personId:((GroupPerson*)self.group.people[_selectedPersonIndex]).personId completionBlock:^(NSError *error) {
+                [HUD removeFromSuperview];
+                if (error) {
+                    [CommonUtil showSimpleHUD:@"Failed in deleting this person" forController:self.navigationController];
+                    return;
+                }
+                [self.group.people removeObjectAtIndex:_selectedPersonIndex];
+                [_facesCollectionView reloadData];
+            }];
+        }
+    } else {
+        if (buttonIndex == 0) {
+            UIViewController * verificationController = nil;
+            for (UIViewController * controller in self.navigationController.viewControllers) {
+                if ([controller isKindOfClass:[MPOVerificationViewController class]]) {
+                    verificationController = controller;
+                    [(MPOVerificationViewController *)controller didSelectPerson: (GroupPerson*)self.group.people[_selectedPersonIndex] inGroup:self.group];
+                }
             }
-            [self.group.people removeObjectAtIndex:_selectedPersonIndex];
-            [_facesCollectionView reloadData];
-        }];
+            [self.navigationController popToViewController:verificationController animated:YES];
+        } else if (buttonIndex == 1) {
+            MPOPersonFacesController * controller = [[MPOPersonFacesController alloc] initWithGroup:self.group andPerson:self.group.people[_selectedPersonIndex]];
+            controller.needTraining = self.needTraining;
+            [self.navigationController pushViewController:controller animated:YES];
+        }
     }
 }
 
@@ -353,6 +372,18 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    _selectedPersonIndex = indexPath.section;
+    if (self.isForVarification) {
+        UIActionSheet * use_person_sheet = [[UIActionSheet alloc]
+                                         initWithTitle:@"Hint"
+                                         delegate:self
+                                         cancelButtonTitle:@"Cancel"
+                                         destructiveButtonTitle:nil
+                                         otherButtonTitles:@"Use this person for verification", @"Edit this person", nil];
+        use_person_sheet.tag = 1;
+        [use_person_sheet showInView:self.view];
+        return;
+    }
     MPOPersonFacesController * controller = [[MPOPersonFacesController alloc] initWithGroup:self.group andPerson:self.group.people[indexPath.section]];
     controller.needTraining = self.needTraining;
     [self.navigationController pushViewController:controller animated:YES];

@@ -74,7 +74,7 @@
     
     _facescollectionView.top = label.bottom + 20;
     _facescollectionView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_facescollectionView registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+    [_facescollectionView registerNib:[UINib nibWithNibName:@"MPOSimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
     _facescollectionView.dataSource = self;
     _facescollectionView.delegate = self;
     [self.view addSubview:_facescollectionView];

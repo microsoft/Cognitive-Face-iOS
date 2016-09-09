@@ -38,6 +38,8 @@
 
 @property (nonatomic, assign) BOOL * needTraining;
 
+@property (nonatomic, assign) BOOL isForVarification;
+
 - (instancetype) initWithGroup: (PersonGroup*) group;
 
 @end

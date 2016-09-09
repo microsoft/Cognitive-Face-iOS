@@ -33,4 +33,6 @@
 
 @interface MPOPersonGroupListController : UIViewController
 
+@property (nonatomic, assign) BOOL isForVarification;
+
 @end

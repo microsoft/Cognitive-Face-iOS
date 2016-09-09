@@ -30,7 +30,20 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "GroupPerson.h"
+#import "PersonGroup.h"
+
+typedef enum {
+    VerificationTypeFaceAndFace = 0,
+    VerificationTypeFaceAndPerson = 1
+} VerificationType;
 
 @interface MPOVerificationViewController : UIViewController
+
+@property(nonatomic, assign) VerificationType verificationType;
+
+- (instancetype) initWithVerificationType: (VerificationType) type;
+
+- (void) didSelectPerson: (GroupPerson*)person inGroup: (PersonGroup*)group;
 
 @end

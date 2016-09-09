@@ -36,7 +36,7 @@
 #import "MPOSimilarFaceViewController.h"
 #import "MPOIdentificationViewController.h"
 
-@interface MPOMainViewController ()
+@interface MPOMainViewController () <UIActionSheetDelegate>
 
 @end
 
@@ -143,8 +143,13 @@
 }
 
 - (void)verificationAction:(id)sender {
-    UIViewController * controller = [[MPOVerificationViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+    UIActionSheet * verification_type_sheet = [[UIActionSheet alloc]
+                                          initWithTitle:@"Choose verification type"
+                                          delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          destructiveButtonTitle:nil
+                                          otherButtonTitles:@"face and face", @"face and person",nil];
+    [verification_type_sheet showInView:self.view];
 }
 
 - (void)groupingAction:(id)sender {
@@ -165,6 +170,18 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        UIViewController * controller = [[MPOVerificationViewController alloc] initWithVerificationType:VerificationTypeFaceAndFace];
+        [self.navigationController pushViewController:controller animated:YES];
+    } else if (buttonIndex == 1) {
+        UIViewController * controller = [[MPOVerificationViewController alloc] initWithVerificationType:VerificationTypeFaceAndPerson];
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 @end

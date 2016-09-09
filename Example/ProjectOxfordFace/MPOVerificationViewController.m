@@ -30,6 +30,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #import "MPOVerificationViewController.h"
+#import "MPOPersonGroupListController.h"
 #import "UIImage+FixOrientation.h"
 #import "UIImage+Crop.h"
 #import "ImageHelper.h"
@@ -40,8 +41,9 @@
 
 @interface MPOVerificationViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource> {
     UICollectionView * _imageContainer0;
-    UICollectionView * _imageContainer1;
+    UIView * _imageContainer1;
     UIButton * _verifyBtn;
+    UILabel * _personNameLabel;
     NSInteger _selectIndex;
     
     NSMutableArray * _faces0;
@@ -49,11 +51,22 @@
     
     NSInteger _selectedFaceIndex0;
     NSInteger _selectedFaceIndex1;
+    
+    PersonGroup * _selectedGroup;
+    GroupPerson * _selectedPerson;
 }
 
 @end
 
 @implementation MPOVerificationViewController
+
+- (instancetype) initWithVerificationType: (VerificationType) type {
+    self = [super init];
+    if (self) {
+        self.verificationType = type;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -65,6 +78,8 @@
     
     _selectedFaceIndex0 = -1;
     _selectedFaceIndex1 = -1;
+    _selectedGroup = nil;
+    _selectedPerson = nil;
     
     [self buildMainUI];
 }
@@ -98,7 +113,7 @@
     _imageContainer0.top = label.top;
     _imageContainer0.right = SCREEN_WIDTH - 20;
     _imageContainer0.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_imageContainer0 registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+    [_imageContainer0 registerNib:[UINib nibWithNibName:@"MPOSimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
     _imageContainer0.dataSource = self;
     _imageContainer0.delegate = self;
     
@@ -108,7 +123,7 @@
     [scrollView addSubview:_imageContainer0];
     
     label = [[UILabel alloc] init];
-    label.text = @"Face2:";
+    label.text = (_verificationType == VerificationTypeFaceAndFace) ? @"Face2:" : @"Person2:";
     [label sizeToFit];
     label.left = 20;
     label.top = _imageContainer0.bottom + 10;
@@ -116,28 +131,49 @@
     
     UIButton * selectImgBtn1 = [UIButton buttonWithType:UIButtonTypeCustom];
     selectImgBtn1.titleLabel.numberOfLines = 0;
-    [selectImgBtn1 setTitle:@"Select Image" forState:UIControlStateNormal];
+    [selectImgBtn1 setTitle: (_verificationType == VerificationTypeFaceAndFace) ? @"Select Image" : @"Select Person"
+                   forState:UIControlStateNormal];
     selectImgBtn1.width = SCREEN_WIDTH / 3 - 20;
     selectImgBtn1.height = selectImgBtn1.width * 3 / 7;
     selectImgBtn1.titleEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
-    selectImgBtn1.titleLabel.font = [UIFont systemFontOfSize:14];
+    selectImgBtn1.titleLabel.font = [UIFont systemFontOfSize:13];
     selectImgBtn1.tag = 1;
-    [selectImgBtn1 addTarget:self action:@selector(chooseImage:) forControlEvents:UIControlEventTouchUpInside];
+    [selectImgBtn1 addTarget:self action: (_verificationType == VerificationTypeFaceAndFace) ? @selector(chooseImage:) : @selector(choosePerson:)
+            forControlEvents:UIControlEventTouchUpInside];
     [selectImgBtn1 setBackgroundImage:btnBackImage forState:UIControlStateNormal];
     
-    flowLayout =[[UICollectionViewFlowLayout alloc]init];
-    _imageContainer1 = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
-    _imageContainer1.width = SCREEN_WIDTH - selectImgBtn1.width - 20 - 10 - 20;
-    _imageContainer1.height = _imageContainer1.width * 4 / 5;
-    _imageContainer1.top = label.top;
-    _imageContainer1.right = SCREEN_WIDTH - 20;
-    _imageContainer1.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_imageContainer1 registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
-    _imageContainer1.dataSource = self;
-    _imageContainer1.delegate = self;
+    if (_verificationType == VerificationTypeFaceAndFace) {
+        flowLayout = [[UICollectionViewFlowLayout alloc]init];
+        _imageContainer1 = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
+        _imageContainer1.width = SCREEN_WIDTH - selectImgBtn1.width - 20 - 10 - 20;
+        _imageContainer1.height = _imageContainer1.width * 4 / 5;
+        _imageContainer1.top = label.top;
+        _imageContainer1.right = SCREEN_WIDTH - 20;
+        _imageContainer1.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+        [(UICollectionView*)_imageContainer1 registerNib:[UINib nibWithNibName:@"MPOSimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+        ((UICollectionView*)_imageContainer1).dataSource = self;
+        ((UICollectionView*)_imageContainer1).delegate = self;
+        
+        selectImgBtn1.center = _imageContainer1.center;
+        selectImgBtn1.left = 20;
+    } else {
+        _imageContainer1 = [[UIView alloc] init];
+        _imageContainer1.width = SCREEN_WIDTH - selectImgBtn1.width - 20 - 10 - 20;
+        _imageContainer1.height = selectImgBtn1.height;
+        _imageContainer1.top = label.top;
+        _imageContainer1.right = SCREEN_WIDTH - 20;
+        _imageContainer1.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+        
+        _personNameLabel = [[UILabel alloc] init];
+        _personNameLabel.font = [UIFont systemFontOfSize:14];
+        _personNameLabel.left = 10;
+        _personNameLabel.top = 10;
+        [_imageContainer1 addSubview:_personNameLabel];
+        
+        selectImgBtn1.center = _imageContainer1.center;
+        selectImgBtn1.left = 20;
+    }
     
-    selectImgBtn1.center = _imageContainer1.center;
-    selectImgBtn1.left = 20;
     [scrollView addSubview:selectImgBtn1];
     [scrollView addSubview:_imageContainer1];
     
@@ -147,13 +183,30 @@
     [_verifyBtn setTitle:@"Verify" forState:UIControlStateNormal];
     [_verifyBtn setBackgroundImage:btnBackImage forState:UIControlStateNormal];
     _verifyBtn.left = 20;
-    _verifyBtn.top = _imageContainer1.bottom + 30;
     _verifyBtn.enabled = NO;
     [_verifyBtn addTarget:self action:@selector(verify:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:_verifyBtn];
     
+    _verifyBtn.top = _imageContainer1.bottom + 30;    
+    
     scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, _verifyBtn.bottom + 20);
     [self.view addSubview:scrollView];
+}
+
+- (void)didSelectPerson: (GroupPerson*)person inGroup: (PersonGroup*)group {
+    _selectedGroup = group;
+    _selectedPerson = person;
+    _personNameLabel.text = person.personName;
+    [_personNameLabel sizeToFit];
+    if (_selectedFaceIndex0 >= 0) {
+        _verifyBtn.enabled = YES;
+    }
+}
+
+- (void)choosePerson: (id)sender {
+    MPOPersonGroupListController * controller = [[MPOPersonGroupListController alloc] init];
+    controller.isForVarification = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)chooseImage: (id)sender {
@@ -184,21 +237,17 @@
 }
 
 - (void)verify: (id)sender {
-    
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:ProjectOxfordFaceSubscriptionKey];
-    
-    PersonFace *firstSelectedFaceObject = _faces0[_selectedFaceIndex0];
-    PersonFace *secondSelectedFaceObject = _faces1[_selectedFaceIndex1];
     
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:HUD];
     HUD.labelText = @"verifying faces";
     [HUD show: YES];
     
-    [client verifyWithFirstFaceId:firstSelectedFaceObject.face.faceId faceId2:secondSelectedFaceObject.face.faceId completionBlock:^(MPOVerifyResult *verifyResult, NSError *error) {
+    void (^completionBlock)(MPOVerifyResult *, NSError *) = ^(MPOVerifyResult *verifyResult, NSError *error){
         [HUD removeFromSuperview];
         if (error) {
-            [CommonUtil showSimpleHUD:@"virification failed" forController:self.navigationController];
+            [CommonUtil showSimpleHUD:@"verification failed" forController:self.navigationController];
             return;
         }
         if (verifyResult.isIdentical) {
@@ -207,7 +256,16 @@
         } else {
             [CommonUtil simpleDialog:@"Two faces are not from one person."];
         }
-    }];
+    };
+    
+    PersonFace *firstSelectedFaceObject = _faces0[_selectedFaceIndex0];
+    if (self.verificationType == VerificationTypeFaceAndFace) {
+        PersonFace *secondSelectedFaceObject = _faces1[_selectedFaceIndex1];
+        [client verifyWithFirstFaceId:firstSelectedFaceObject.face.faceId faceId2:secondSelectedFaceObject.face.faceId completionBlock:completionBlock];
+    } else {
+        [client verifyWithFaceId:firstSelectedFaceObject.face.faceId personId:_selectedPerson.personId personGroupId:_selectedGroup.groupId completionBlock:completionBlock];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -266,7 +324,9 @@
             [faceArray addObject:personFace];
         }
         [_imageContainer0 reloadData];
-        [_imageContainer1 reloadData];
+        if (_verificationType == VerificationTypeFaceAndFace) {
+            [(UICollectionView*)_imageContainer1 reloadData];
+        }
         _verifyBtn.enabled = NO;
         _selectedFaceIndex0 = -1;
         _selectedFaceIndex1 = -1;
@@ -338,7 +398,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     collectionView == _imageContainer0 ? (_selectedFaceIndex0 = indexPath.row) : (_selectedFaceIndex1 = indexPath.row);
-    if (_selectedFaceIndex1 >= 0 && _selectedFaceIndex0 >= 0) {
+    if (_selectedFaceIndex0 >= 0 && (_selectedFaceIndex1 >= 0 || _selectedPerson)) {
         _verifyBtn.enabled = YES;
     }
     [collectionView reloadData];

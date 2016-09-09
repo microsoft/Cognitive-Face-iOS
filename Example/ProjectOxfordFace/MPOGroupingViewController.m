@@ -195,7 +195,7 @@
     _imageContainer.top = 20;
     _imageContainer.right = SCREEN_WIDTH - 20;
     _imageContainer.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_imageContainer registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+    [_imageContainer registerNib:[UINib nibWithNibName:@"MPOSimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
     _imageContainer.dataSource = self;
     _imageContainer.delegate = self;
     
@@ -218,7 +218,7 @@
     _resultContainer.top = label.bottom + 5;
     _resultContainer.left = 20;
     _resultContainer.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_resultContainer registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+    [_resultContainer registerNib:[UINib nibWithNibName:@"MPOSimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
     [_resultContainer registerClass:[MPOGroupSectionHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"faceSectionHeader"];
     _resultContainer.dataSource = self;
     _resultContainer.delegate = self;

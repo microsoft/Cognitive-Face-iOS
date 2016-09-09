@@ -187,7 +187,7 @@
     _imageContainer0.top = 20;
     _imageContainer0.right = SCREEN_WIDTH - 20;
     _imageContainer0.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_imageContainer0 registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+    [_imageContainer0 registerNib:[UINib nibWithNibName:@"MPOSimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
     _imageContainer0.dataSource = self;
     _imageContainer0.delegate = self;
     
@@ -225,7 +225,7 @@
     _imageContainer1.top = label.top;
     _imageContainer1.right = SCREEN_WIDTH - 20;
     _imageContainer1.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_imageContainer1 registerNib:[UINib nibWithNibName:@"SimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+    [_imageContainer1 registerNib:[UINib nibWithNibName:@"MPOSimpleFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
     _imageContainer1.dataSource = self;
     _imageContainer1.delegate = self;
     

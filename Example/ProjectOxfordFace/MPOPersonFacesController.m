@@ -214,7 +214,7 @@
     _facescollectionView.left = 10;
     _facescollectionView.top = _personNameField.bottom + 10;
     _facescollectionView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    [_facescollectionView registerNib:[UINib nibWithNibName:@"PersonFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
+    [_facescollectionView registerNib:[UINib nibWithNibName:@"MPOPersonFaceCell" bundle:nil] forCellWithReuseIdentifier:@"faceCell"];
     _facescollectionView.dataSource = self;
     _facescollectionView.delegate = self;
     [self.view addSubview:_facescollectionView];
