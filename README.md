@@ -28,14 +28,14 @@ The sample app should already have the necessary Pods shipped with it. Open the 
 
 Microsoft will receive the images you upload and may use them to improve Face API and related services. By submitting an image, you confirm you have consent from everyone in it.
 
-<img src="SampleScreenshots/SampleScreenshot1.png" width="30%"/>
-<img src="SampleScreenshots/SampleScreenshot2.png" width="30%"/>
-<img src="SampleScreenshots/SampleScreenshot3.png" width="30%"/>
-<img src="SampleScreenshots/SampleScreenshot4.png" width="30%"/>
-<img src="SampleScreenshots/SampleScreenshot5.png" width="30%"/>
-<img src="SampleScreenshots/SampleScreenshot6.png" width="30%"/>
-<img src="SampleScreenshots/SampleScreenshot7.png" width="30%"/>
-<img src="SampleScreenshots/SampleScreenshot8.png" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot1.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot2.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot3.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot4.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot5.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot6.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot7.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot8.jpg" width="30%"/>
 
 
 ### Having issues?
