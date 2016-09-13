@@ -24,7 +24,7 @@
             </objects>
             <point key="canvasLocation" x="113" y="413"/>
         </scene>
-        <!--Project Oxford Face Demo-->
+        <!--Cognitive Services Face Demo-->
         <scene sceneID="r4y-Yc-f2v">
             <objects>
                 <viewController id="cFY-th-UOk" customClass="MPOMainViewController" sceneMemberID="viewController">
@@ -37,7 +37,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Project Oxford Face Demo" id="Fmm-Pr-WMt"/>
+                    <navigationItem key="navigationItem" title="Cognitive Services Face Demo" id="Fmm-Pr-WMt"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mul-6q-QFY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

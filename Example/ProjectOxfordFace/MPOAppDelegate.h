@@ -32,8 +32,6 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-#define FACE_NUMBER_LIMIT 50
-
 static NSString *const ProjectOxfordFaceSubscriptionKey = @"Your Subscription Key";
 
 @interface MPOAppDelegate : UIResponder <UIApplicationDelegate>

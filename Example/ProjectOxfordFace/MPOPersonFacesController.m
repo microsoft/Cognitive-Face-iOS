@@ -134,14 +134,15 @@
         [HUD show: YES];
         
         [client updatePersonWithPersonGroupId:self.group.groupId personId:self.person.personId name:_personNameField.text userData:nil completionBlock:^(NSError *error) {
+            [HUD removeFromSuperview];
             if (error) {
                 [CommonUtil simpleDialog:@"Failed in updating person."];
                 return;
             }
             self.person.personName = _personNameField.text;
+            [_facescollectionView reloadData];
         }];
     }
-    self.person.personName = _personNameField.text;
 }
 
 - (void)pickImage {
