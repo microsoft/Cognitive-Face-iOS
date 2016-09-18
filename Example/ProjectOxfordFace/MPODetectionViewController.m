@@ -129,6 +129,9 @@
             [_detectionFaces addObject:obj];
         }
         [_resultTableView reloadData];
+        if (collection.count == 0) {
+            [CommonUtil showSimpleHUD:@"No face detected." forController:self.navigationController];
+        }
     }];
 }
 

@@ -251,10 +251,21 @@
             return;
         }
         if (verifyResult.isIdentical) {
-            NSString * message = [NSString stringWithFormat:@"Two faces are from one person. The confidence is %@.", verifyResult.confidence];
+            NSString * message = nil;
+            if (self.verificationType == VerificationTypeFaceAndFace) {
+                message = [NSString stringWithFormat:@"Two faces are from one person. The confidence is %@.", verifyResult.confidence];
+            } else {
+                message = [NSString stringWithFormat:@"This face is belong to this person. The confidence is %@.", verifyResult.confidence];
+            }
             [CommonUtil simpleDialog:message];
         } else {
-            [CommonUtil simpleDialog:@"Two faces are not from one person."];
+            NSString * message = nil;
+            if (self.verificationType == VerificationTypeFaceAndFace) {
+                message = @"Two faces are not from one person.";
+            } else {
+                message = @"This face is not belong to this person.";
+            }
+            [CommonUtil simpleDialog:message];
         }
     };
     
@@ -310,7 +321,6 @@
     [client detectWithData:data returnFaceId:YES returnFaceLandmarks:YES returnFaceAttributes:@[] completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
         [HUD removeFromSuperview];
         if (error) {
-            
             [CommonUtil showSimpleHUD:@"detection failed" forController:self.navigationController];
             return;
         }
@@ -330,6 +340,10 @@
         _verifyBtn.enabled = NO;
         _selectedFaceIndex0 = -1;
         _selectedFaceIndex1 = -1;
+        
+        if (collection.count == 0) {
+            [CommonUtil showSimpleHUD:@"No face detected." forController:self.navigationController];
+        }
     }];
 }
 

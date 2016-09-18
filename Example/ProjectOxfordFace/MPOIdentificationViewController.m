@@ -111,6 +111,11 @@
                 [_results addObject:@{@"face" : face, @"personName": person.personName, @"confidence" : candidate.confidence}];
             }
         }
+        
+        if (collection.count == 0) {
+            [CommonUtil showSimpleHUD:@"No result." forController:self.navigationController];
+        }
+        
         [_resultListView reloadData];
     }];
 }
@@ -324,6 +329,9 @@
         }
         _identifyBtn.enabled = NO;
         [_imageContainer reloadData];
+        if (collection.count == 0) {
+            [CommonUtil showSimpleHUD:@"No face detected." forController:self.navigationController];
+        }
     }];
 }
 

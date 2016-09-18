@@ -137,7 +137,12 @@
     [self.view addSubview:scrollView];
     
     if ([ProjectOxfordFaceSubscriptionKey isEqualToString:@"Your Subscription Key"]) {
-        [CommonUtil simpleDialog:@"You haven't inserted the Subscription Key"];
+        detectionBtn.enabled = NO;
+        verificationBtn.enabled = NO;
+        groupingBtn.enabled = NO;
+        similarFaceBtn.enabled = NO;
+        identificationBtn.enabled = NO;
+        [CommonUtil simpleDialog:@"You haven't input the subscription key. Please specify the subscription key in MPOAppDelegate.h"];
     }
 }
 

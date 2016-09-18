@@ -286,6 +286,10 @@
             _groupBtn.enabled = YES;
         }
         _imageCountLabel.text =  [NSString stringWithFormat:@"%d faces in total", (int32_t)_faces.count];
+        
+        if (collection.count == 0) {
+            [CommonUtil showSimpleHUD:@"No face detected." forController:self.navigationController];
+        }
     }];
 }
 

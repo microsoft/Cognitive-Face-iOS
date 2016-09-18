@@ -137,6 +137,9 @@
             [_resultContainer addSubview:label];
         }
         _resultContainer.contentSize = CGSizeMake(_resultContainer.width, 5 + collection.count * (5 + _resultContainer.width / 6));
+        if (collection.count == 0) {
+            [CommonUtil showSimpleHUD:@"No similar faces." forController:self.navigationController];
+        }
     }];
 }
 
@@ -325,6 +328,9 @@
         _imageCountLabel.text =  [NSString stringWithFormat:@"%ld faces in total", _selectedFaces.count];
         [_imageContainer0 reloadData];
         [_imageContainer1 reloadData];
+        if (collection.count == 0) {
+            [CommonUtil showSimpleHUD:@"No face detected." forController:self.navigationController];
+        }
     }];
 }
 
