@@ -31,11 +31,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MPOGroupingViewController : UIViewController <UICollectionViewDataSource, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *numberOfFacesDetectedLabel;
-@property (weak, nonatomic) IBOutlet UICollectionView *facesCollectionView;
-- (IBAction)addFacesButtonPressed:(id)sender;
-- (IBAction)groupButtonPressed:(id)sender;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@interface MPOGroupingViewController : UIViewController
+
 @end

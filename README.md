@@ -16,22 +16,26 @@ The easiest way to consume the iOS client library is via CocoaPods. To install v
 The sample app demonstrates the use of the Microsoft Face API iOS client library. The sample shows scenarios such as face detection, face verification, and face grouping.
 
 ### Requirements
-iOS must be version 9.0 or higher.
+iOS must be version 8.1 or higher.
 
 ### Building and running the sample
 The sample app should already have the necessary Pods shipped with it. Open the `ProjectOxfordFace.xcworkspace` in Xcode and build.
 
  1. First, you must obtain a Face API subscription key by [following the instructions on our website](<https://www.microsoft.com/cognitive-services/en-us/sign-up>).
- 2. Once in Xcode, under the example subdirectory, navigate to the file `MPODemoConstants.h` and insert your subscription key for the Face API
+ 2. Once in Xcode, under the example subdirectory, navigate to the file `MPOAppDelegate.h` and insert your subscription key for the Face API
  3. To run the sample app, ensure that the target on top left side of Xcode is selected as `ProjectOxfordFace-Example` and select the play button or select Product > Run on the menu bar
  4. Once the app is launched, click on the buttons to try out the different scenarios.
 
 Microsoft will receive the images you upload and may use them to improve Face API and related services. By submitting an image, you confirm you have consent from everyone in it.
 
-<img src="SampleScreenshots/SampleScreenshot1.png" width="30%"/>
-<img src="SampleScreenshots/SampleScreenshot2.png" width="30%"/>
-<img src="SampleScreenshots/SampleScreenshot3.png" width="30%"/>
-<img src="SampleScreenshots/SampleScreenshot4.png" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot1.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot2.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot3.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot4.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot5.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot6.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot7.jpg" width="30%"/>
+<img src="SampleScreenshots/SampleScreenshot8.jpg" width="30%"/>
 
 
 ### Having issues?
@@ -39,7 +43,7 @@ Microsoft will receive the images you upload and may use them to improve Face AP
  2. Make sure you have included the subscription key in `MPOTestConstants.h`.
  3. Make sure you have opened the `.xcworkspace` file and not the `.xcodeproj` file in Xcode.
  4. Make sure you have used the correct `Deployment Team` profile.
- 5. Make sure you are running iOS 9.0 or higher
+ 5. Make sure you are running iOS 8.1 or higher
 
 
 ### Running and exploring the unit tests

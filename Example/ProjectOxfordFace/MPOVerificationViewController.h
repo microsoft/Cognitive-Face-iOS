@@ -30,14 +30,20 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+#import "GroupPerson.h"
+#import "PersonGroup.h"
 
-@interface MPOVerificationViewController : UIViewController <UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate>
-@property (weak, nonatomic) IBOutlet UIImageView *firstFaceImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *secondFaceImageView;
-@property (weak, nonatomic) IBOutlet UICollectionView *firstFaceCollectionView;
-@property (weak, nonatomic) IBOutlet UICollectionView *secondFaceCollectionView;
-- (IBAction)firstFaceSelectImageButtonPressed:(id)sender;
-- (IBAction)secondFaceSelectImageButtonPressed:(id)sender;
-- (IBAction)verifyButtonPressed:(id)sender;
+typedef enum {
+    VerificationTypeFaceAndFace = 0,
+    VerificationTypeFaceAndPerson = 1
+} VerificationType;
+
+@interface MPOVerificationViewController : UIViewController
+
+@property(nonatomic, assign) VerificationType verificationType;
+
+- (instancetype) initWithVerificationType: (VerificationType) type;
+
+- (void) didSelectPerson: (GroupPerson*)person inGroup: (PersonGroup*)group;
 
 @end

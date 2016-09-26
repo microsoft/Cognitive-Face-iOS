@@ -29,10 +29,27 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-@import UIKit;
+#import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
+
+static NSString *const ProjectOxfordFaceSubscriptionKey = @"Your Subscription Key";
 
 @interface MPOAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+@property (retain, nonatomic) NSData * mdl;
+@property (retain, nonatomic) NSData * recomdl;
+@property (assign, nonatomic) intptr_t jdaDetector;
+@property (assign, nonatomic) intptr_t recognizer;
+
+@property (retain, nonatomic) NSMutableArray * groups;
+
+- (void)saveContext;
+- (NSURL *)applicationDocumentsDirectory;
 
 @end
