@@ -315,7 +315,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 }
 
 - (NSURLSessionDataTask *)listPersonGroupsWithStart:(NSString*)start top:(NSInteger)top completionBlock:(MPOPersonGroupArrayCompletionBlock)completion {
-    NSString * url = [NSString stringWithFormat:@"persongroups?top=%ld", top];
+    NSString * url = [NSString stringWithFormat:@"persongroups?top=%ld", (long)top];
     if (start != nil) {
         url = [url stringByAppendingString:[NSString stringWithFormat:@"&start=%@", start]];
     }
