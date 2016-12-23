@@ -44,6 +44,8 @@
 		BEFADD2F336B972BA6616631E2741339 /* Pods-ProjectOxfordFace_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 87D85C79B142AD11E471A451D9D65348 /* Pods-ProjectOxfordFace_Tests-dummy.m */; };
 		C02C6BC8495AC8FADD0FBDD79F7EFEAF /* MPOCandidate.h in Headers */ = {isa = PBXBuildFile; fileRef = 99F8FE14B40B8B8316CD58205E911637 /* MPOCandidate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C53B229038F23C0A3B0CE9060CD1ABDD /* MPOFaceListMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DB81DADF9892A56F3A7DF38C46807CE /* MPOFaceListMetadata.m */; };
+		C97F85DC1E0C9C99004F426D /* MPOFaceEmotion.h in Headers */ = {isa = PBXBuildFile; fileRef = C916E8781E0BBBC70085894A /* MPOFaceEmotion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C97F85DD1E0C9C9F004F426D /* MPOFaceEmotion.m in Sources */ = {isa = PBXBuildFile; fileRef = C916E8791E0BBC0B0085894A /* MPOFaceEmotion.m */; };
 		CCD81CC20FC61159FB091BEF052454E1 /* MPOSimilarFace.h in Headers */ = {isa = PBXBuildFile; fileRef = AA211DA617D4A5F7AA02257A1C1871A6 /* MPOSimilarFace.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D233349AC807D23FA8D301AD1F667B0C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
 		D26D8CFB00C0B626DF9F116FDDFC5414 /* ProjectOxfordFace.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BC9BADE8F4E6840045EB1A0AA7EB4F87 /* ProjectOxfordFace.bundle */; };
@@ -144,6 +146,8 @@
 		BC9BADE8F4E6840045EB1A0AA7EB4F87 /* ProjectOxfordFace.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProjectOxfordFace.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCABD0AB2894CC9E19BFFEDE8E9213BE /* Pods-ProjectOxfordFace_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ProjectOxfordFace_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		C086DF2209272D511876F17ECCC450F3 /* Pods_ProjectOxfordFace_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProjectOxfordFace_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C916E8781E0BBBC70085894A /* MPOFaceEmotion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPOFaceEmotion.h; sourceTree = "<group>"; };
+		C916E8791E0BBC0B0085894A /* MPOFaceEmotion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MPOFaceEmotion.m; sourceTree = "<group>"; };
 		CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		E290F53D6F292DAD65BF9F238D993DE9 /* MPOPersonGroup.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MPOPersonGroup.h; sourceTree = "<group>"; };
 		E344D64F1D5AB0B280F4D7A2CC359F33 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -294,6 +298,8 @@
 				68093984C048F217C7C3DFCED57FF4A3 /* MPOTrainingStatus.m */,
 				8F28CE6B57CB1ADEEB900FA82A4353F3 /* MPOVerifyResult.h */,
 				3562634873C10142BCF986AA727C3C0F /* MPOVerifyResult.m */,
+				C916E8781E0BBBC70085894A /* MPOFaceEmotion.h */,
+				C916E8791E0BBC0B0085894A /* MPOFaceEmotion.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -401,6 +407,7 @@
 				FFC228060174DD9C4384C099F271108A /* MPOFaceMetadata.h in Headers */,
 				5B2453A6080A006EDCCB01F086882D22 /* MPOFaceRectangle.h in Headers */,
 				9B7268733B90E9307572DBAF9404264F /* MPOFaceSDK.h in Headers */,
+				C97F85DC1E0C9C99004F426D /* MPOFaceEmotion.h in Headers */,
 				DFDBDD3F53A7FB9D895F7B181FE13F65 /* MPOFaceServiceClient.h in Headers */,
 				35725CD9E40D615B1303ACFBE0919F45 /* MPOFacialHair.h in Headers */,
 				DC944CAEA1C3C7B6E98556A1DDC4BFFF /* MPOGroupResult.h in Headers */,
@@ -565,6 +572,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED899E5548588AE15EB3667F68E4C136 /* MPOAddPersistedFaceResult.m in Sources */,
+				C97F85DD1E0C9C9F004F426D /* MPOFaceEmotion.m in Sources */,
 				5CA4FDA97BAF5C888D6F8CEFFC8B0296 /* MPOCandidate.m in Sources */,
 				56DCFA68E19889E4A469AF9D727EC078 /* MPOCreatePersonResult.m in Sources */,
 				47E9D2D5AF16131861A239FE678786A7 /* MPOFace.m in Sources */,

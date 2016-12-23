@@ -30,17 +30,17 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "MPOFacialHair.h"
-#import "MPOFaceHeadPose.h"
-#import "MPOFaceEmotion.h"
 
-@interface MPOFaceAttributes : NSObject
-@property NSNumber *age;
-@property NSNumber *smile;
-@property NSString *gender;
-@property NSString *glasses;
-@property MPOFacialHair *facialHair;
-@property MPOFaceHeadPose *headPose;
-@property MPOFaceEmotion *emotion;
+@interface MPOFaceEmotion : NSObject
+@property NSNumber *anger;
+@property NSNumber *contempt;
+@property NSNumber *disgust;
+@property NSNumber *fear;
+@property NSNumber *happiness;
+@property NSNumber *neutral;
+@property NSNumber *sadness;
+@property NSNumber *surprise;
+@property NSNumber *mostEmotionValue;
+@property NSString *mostEmotion;
 -(instancetype)initWithDictionary:(NSDictionary *)dict;
 @end

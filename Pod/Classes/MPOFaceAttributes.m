@@ -34,11 +34,13 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
     if (self) {
-        self.headPose = [[MPOFaceHeadPose alloc] initWithDictionary:dict[@"headPose"]];
         self.age = dict[@"age"];
-        self.smile = dict[@"smile"];
         self.gender = dict[@"gender"];
+        self.smile = dict[@"smile"];
+        self.glasses = dict[@"glasses"];
         self.facialHair = [[MPOFacialHair alloc] initWithDictionary:dict[@"facialHair"]];
+        self.emotion = [[MPOFaceEmotion alloc] initWithDictionary:dict[@"emotion"]];
+        self.headPose = [[MPOFaceHeadPose alloc] initWithDictionary:dict[@"headPose"]];
     }
     return self;
 }

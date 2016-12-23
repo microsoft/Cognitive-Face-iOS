@@ -43,9 +43,11 @@
 typedef enum {
     MPOFaceAttributeTypeAge = 1,
     MPOFaceAttributeTypeGender,
-    MPOFaceAttributeTypeFacialHair,
     MPOFaceAttributeTypeSmile,
+    MPOFaceAttributeTypeGlasses,
+    MPOFaceAttributeTypeFacialHair,
     MPOFaceAttributeTypeHeadPose,
+    MPOFaceAttributeTypeEmotion,
 } MPOFaceAttributeType;
 
 typedef enum {
