@@ -4,6 +4,26 @@ This repo contains the iOS client library & sample for the Microsoft Face API, a
 * [Read the documentation](https://www.microsoft.com/cognitive-services/en-us/face-api/documentation/overview)
 * [Find more SDKs & Samples](https://www.microsoft.com/cognitive-services/en-us/SDK-Sample?api=face)
 
+<div style="margin: 25px;">
+<a href="https://rapidapi.com/package/MicrosoftFaceApi/functions?utm_source=MicrosoftFaceGitHub-iOS&utm_medium=button&utm_content=Vendor_GitHub" style="
+    all: initial;
+    background-color: #498FE1;
+    border-width: 0;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: white;
+    font-family: 'Helvetica';
+    font-size: 12pt;
+    background-image: url(https://scdn.rapidapi.com/logo-small.png);
+    background-size: 25px;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: 10px;
+    padding-left: 44px;
+    cursor: pointer;">
+  Run now on <b>RapidAPI</b>
+</a>
+</div>
 
 ## The Client Library
 The easiest way to consume the iOS client library is via CocoaPods. To install via Cocoapods
