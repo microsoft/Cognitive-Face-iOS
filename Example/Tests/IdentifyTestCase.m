@@ -70,7 +70,7 @@
     [super tearDown];
 }
 
-- (void)testIdentification {
+/*- (void)testIdentification {
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"asynchronous request"];
     
@@ -88,7 +88,7 @@
     }];
     
     [self waitForExpectationsWithTimeout:120.0 handler:nil];
-}
+}*/
 
 
 - (void)createChrisPerson:(XCTestExpectation *)expectation {

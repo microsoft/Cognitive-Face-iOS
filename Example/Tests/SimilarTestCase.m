@@ -36,7 +36,7 @@
 @property NSDictionary *testDataDict;
 @end
 
-@implementation SimilarTestCase
+/*@implementation SimilarTestCase
 
 - (void)setUp {
     [super setUp];
@@ -58,7 +58,7 @@
     [super tearDown];
 }
 
-- (void)testSimilar {
+/*- (void)testSimilar {
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"asynchronous request"];
     
@@ -91,4 +91,4 @@
     
 }
 
-@end
+@end*/
