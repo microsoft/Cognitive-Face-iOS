@@ -613,7 +613,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 
 - (NSURLSessionDataTask *)startTaskWithHttpMethod:(NSString *)httpMethod path:(NSString *)path parameters:(NSDictionary *)params urlParams:(NSDictionary *)urlParams bodyData:(NSData *)bodyData completion:(PORequestCompletionBlock)completion {
     
-    NSString *basePath = @"https://api.projectoxford.ai/face/v1.0/";
+    NSString *basePath = @"https://westus.api.cognitive.microsoft.com/face/v1.0/";
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
