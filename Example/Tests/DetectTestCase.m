@@ -36,7 +36,7 @@
 @interface DetectTestCase : XCTestCase
 
 @end
-@implementation DetectTestCase
+/*@implementation DetectTestCase
 
 - (void)setUp {
     [super setUp];
@@ -82,4 +82,4 @@
     
 }
 
-@end
+@end*/

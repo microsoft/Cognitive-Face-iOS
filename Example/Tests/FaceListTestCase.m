@@ -38,7 +38,7 @@
 
 @end
 
-@implementation FaceListTestCase
+/*@implementation FaceListTestCase
 
 - (void)setUp {
     [super setUp];
@@ -178,4 +178,4 @@
     
 }
 
-@end
+@end*/

@@ -51,7 +51,7 @@
     [super tearDown];
 }
 
-- (void)testPersonGroup {
+/*- (void)testPersonGroup {
     
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"asynchronous request"];
@@ -72,7 +72,7 @@
     
     [self waitForExpectationsWithTimeout:10.0 handler:nil];
     
-}
+}*/
 
 - (void)getPersonGroup:(XCTestExpectation *)expectation {
  

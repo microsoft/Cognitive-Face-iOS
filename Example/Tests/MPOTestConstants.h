@@ -32,7 +32,7 @@
 #ifndef ProjectOxfordFaceDemo_MPOTestConstants_h
 #define ProjectOxfordFaceDemo_MPOTestConstants_h
 
-static NSString * const kOxfordApiKey = @"";
+static NSString * const kOxfordApiKey = @"657e0350a8d94e6b9e024b36eb03a260";
 
 static NSString * const kChrisImageName1 = @"MSC13_ChrisA_01.jpg";
 static NSString * const kChrisImageName2 = @"MSC13_ChrisA_02.jpg";

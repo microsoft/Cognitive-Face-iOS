@@ -183,7 +183,7 @@ typedef void (^MPOFaceListMetadataArrayCompletionBlock)(NSArray<MPOFaceListMetad
  *  @param completion            completionHandler
  *  @return the identification results, NSArray containing MPOIdentifyResult objects
  */
-- (NSURLSessionDataTask *)identifyWithPersonGroupId:(NSString *)personGroupId faceIds:(NSArray *)faceIds maxNumberOfCandidates:(NSInteger)maxNumberOfCandidates confidenceThreshold:(CGFloat)confidenceThreshold completionBlock:(MPOIdentifyResultArrayCompletionBlock)completion;
+//- (NSURLSessionDataTask *)identifyWithPersonGroupId:(NSString *)personGroupId faceIds:(NSArray *)faceIds maxNumberOfCandidates:(NSInteger)maxNumberOfCandidates confidenceThreshold:(CGFloat)confidenceThreshold completionBlock:(MPOIdentifyResultArrayCompletionBlock)completion;
 
 
 #pragma mark Person Groups APIs

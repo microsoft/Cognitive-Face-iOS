@@ -1,16 +1,26 @@
 PODS:
-  - ProjectOxfordFace (1.0)
+  - MobileCenter (0.4.1):
+    - MobileCenter/MobileCenterAnalytics (= 0.4.1)
+    - MobileCenter/MobileCenterCrashes (= 0.4.1)
+  - MobileCenter/MobileCenter (0.4.1)
+  - MobileCenter/MobileCenterAnalytics (0.4.1):
+    - MobileCenter/MobileCenter
+  - MobileCenter/MobileCenterCrashes (0.4.1):
+    - MobileCenter/MobileCenter
+  - ProjectOxfordFace (1.2.0)
 
 DEPENDENCIES:
+  - MobileCenter
   - ProjectOxfordFace (from `../`)
 
 EXTERNAL SOURCES:
   ProjectOxfordFace:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  ProjectOxfordFace: f9ec8da3b0f3c5a4fa03636cfaabdc5492421953
+  MobileCenter: 06c1c52837bdccbcf2e67adb2727d05efbad69b7
+  ProjectOxfordFace: eeb628b3d91ffe4f8fcec151abf26941975479d3
 
-PODFILE CHECKSUM: 7e30c046a567b33ddb404b17151d6175048f9e00
+PODFILE CHECKSUM: e3b22ce68dc969da2f6ac78e5d5657317d03795f
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.2.0

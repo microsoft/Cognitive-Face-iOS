@@ -31,8 +31,10 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+//@import UIKit;
+//@import CoreData;
 
-static NSString *const ProjectOxfordFaceSubscriptionKey = @"Your Subscription Key";
+static NSString *const ProjectOxfordFaceSubscriptionKey = @"657e0350a8d94e6b9e024b36eb03a260";
 
 @interface MPOAppDelegate : UIResponder <UIApplicationDelegate>
 

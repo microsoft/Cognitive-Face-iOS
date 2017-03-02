@@ -20,7 +20,6 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		7B4071AD1D65EC1100362256 /* MPOAddPersonFaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4071AC1D65EC1100362256 /* MPOAddPersonFaceController.m */; };
 		7B4071B01D69BEDB00362256 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4071AF1D69BEDB00362256 /* UIViewController+BackButtonHandler.m */; };
 		7B4071B31D69BFF300362256 /* MPOMainNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B4071B21D69BFF300362256 /* MPOMainNavigationController.m */; };
@@ -101,7 +100,6 @@
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6721C85774307A50E8CEE96C /* Pods-ProjectOxfordFace_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProjectOxfordFace_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProjectOxfordFace_Tests/Pods-ProjectOxfordFace_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		7B4071AB1D65EC1100362256 /* MPOAddPersonFaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPOAddPersonFaceController.h; sourceTree = "<group>"; };
@@ -290,7 +288,6 @@
 				EF575B0D1C6872540021A3AD /* SimilarTestCase.m */,
 				EF575B0E1C6872540021A3AD /* VerifyTestCase.m */,
 				EF9BE0131C7083380017C1FB /* FaceListTestCase.m */,
-				6003F5BB195388D20070C39A /* Tests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -579,7 +576,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		48B0D45BD668080EBDF3A23D /* [CP] Copy Pods Resources */ = {
@@ -609,7 +606,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		87CAD67D01151B119E263CF7 /* [CP] Embed Pods Frameworks */ = {
@@ -706,7 +703,6 @@
 				EF575B0F1C6872540021A3AD /* DetectTestCase.m in Sources */,
 				EF575B111C6872540021A3AD /* IdentifyTestCase.m in Sources */,
 				EF575B151C6872540021A3AD /* VerifyTestCase.m in Sources */,
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
 				EF575B131C6872540021A3AD /* PersonGroupTestCase.m in Sources */,
 				EF575B101C6872540021A3AD /* GroupTestCase.m in Sources */,
 				EF9BE0141C7083380017C1FB /* FaceListTestCase.m in Sources */,

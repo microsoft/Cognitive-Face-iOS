@@ -30,6 +30,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #import "MPOAppDelegate.h"
+//@import MobileCenter;
+//@import MobileCenterAnalytics;
+//@import MobileCenterCrashes;
 
 @implementation MPOAppDelegate
 
