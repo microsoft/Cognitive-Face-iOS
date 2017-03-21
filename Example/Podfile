@@ -1,11 +1,11 @@
-source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
 use_frameworks!
 
 target 'ProjectOxfordFace_Example' do
-	pod 'ProjectOxfordFace', :path => '../'
+    pod 'ProjectOxfordFace', :path => '../'
 
-	target 'ProjectOxfordFace_Tests' do
-		inherit! :search_paths
+    target 'ProjectOxfordFace_Tests' do
+        inherit! :search_paths
 
-	end
+    end
 end

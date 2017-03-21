@@ -68,18 +68,21 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
         if ([number isEqualToNumber:@(MPOFaceAttributeTypeGender)]) {
             [faceAttributesStringArray addObject:@"gender"];
         }
-        if ([number isEqualToNumber:@(MPOFaceAttributeTypeHeadPose)]) {
-            [faceAttributesStringArray addObject:@"headPose"];
-            
-        }
         if ([number isEqualToNumber:@(MPOFaceAttributeTypeSmile)]) {
             [faceAttributesStringArray addObject:@"smile"];
-            
+        }
+        if ([number isEqualToNumber:@(MPOFaceAttributeTypeGlasses)]) {
+            [faceAttributesStringArray addObject:@"glasses"];
         }
         if ([number isEqualToNumber:@(MPOFaceAttributeTypeFacialHair)]) {
             [faceAttributesStringArray addObject:@"facialHair"];
         }
-        
+        if ([number isEqualToNumber:@(MPOFaceAttributeTypeHeadPose)]) {
+            [faceAttributesStringArray addObject:@"headPose"];
+        }
+        if ([number isEqualToNumber:@(MPOFaceAttributeTypeEmotion)]) {
+            [faceAttributesStringArray addObject:@"emotion"];
+        }
     }
     
     NSString *joinedComponents = [faceAttributesStringArray componentsJoinedByString:@","];

@@ -35,9 +35,11 @@
 
 @property (nonatomic, retain) NSString *ageText;
 @property (nonatomic, retain) NSString *genderText;
-@property (nonatomic, retain) NSString *headPoseText;
-@property (nonatomic, retain) NSString *moustacheText;
 @property (nonatomic, retain) NSString *smileText;
+@property (nonatomic, retain) NSString *glassesText;
+@property (nonatomic, retain) NSString *facialHairText;
+@property (nonatomic, retain) NSString *headPoseText;
+@property (nonatomic, retain) NSString *emotionText;
 @property (nonatomic, retain) UIImage *faceImage;
 
 @end

@@ -36,6 +36,10 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>iOS SDK Sample for the Microsoft Face API requires access to the Camera for functionality.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>iOS SDK Sample for the Microsoft Face API requires access to the Photo Library for functionality.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

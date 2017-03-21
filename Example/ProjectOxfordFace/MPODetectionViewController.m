@@ -43,9 +43,11 @@
 @property (nonatomic, strong) UIImage *croppedFaceImage;
 @property (nonatomic, strong) NSString *ageText;
 @property (nonatomic, strong) NSString *genderText;
-@property (nonatomic, strong) NSString *headPoseText;
-@property (nonatomic, strong) NSString *moustacheText;
 @property (nonatomic, strong) NSString *smileText;
+@property (nonatomic, strong) NSString *glassesText;
+@property (nonatomic, strong) NSString *facialHairText;
+@property (nonatomic, strong) NSString *headPoseText;
+@property (nonatomic, strong) NSString *emotionText;
 @end
 
 @implementation MPODetectionFaceObject
@@ -109,7 +111,7 @@
     HUD.labelText = @"deteting faces";
     [HUD show: YES];
     
-    [client detectWithData:data returnFaceId:YES returnFaceLandmarks:YES returnFaceAttributes:@[@(MPOFaceAttributeTypeAge), @(MPOFaceAttributeTypeFacialHair), @(MPOFaceAttributeTypeHeadPose), @(MPOFaceAttributeTypeSmile), @(MPOFaceAttributeTypeGender)] completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
+    [client detectWithData:data returnFaceId:YES returnFaceLandmarks:YES returnFaceAttributes:@[@(MPOFaceAttributeTypeAge), @(MPOFaceAttributeTypeGender), @(MPOFaceAttributeTypeSmile), @(MPOFaceAttributeTypeGlasses), @(MPOFaceAttributeTypeFacialHair), @(MPOFaceAttributeTypeHeadPose), @(MPOFaceAttributeTypeEmotion)] completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
         [HUD removeFromSuperview];
         if (error) {
             [CommonUtil showSimpleHUD:@"detection failed" forController:self.navigationController];
@@ -123,9 +125,11 @@
             obj.croppedFaceImage = croppedImage;
             obj.ageText = [NSString stringWithFormat:@"Age: %@", face.attributes.age.stringValue];
             obj.genderText = [NSString stringWithFormat:@"Gender: %@", face.attributes.gender];
-            obj.headPoseText = [NSString stringWithFormat:@"Head Pose(in degrees): roll(%@), yaw(%@)", face.attributes.headPose.roll.stringValue, face.attributes.headPose.yaw.stringValue];
-            obj.moustacheText = [NSString stringWithFormat:@"Moustache: %@, Beard %@", face.attributes.facialHair.mustache.stringValue, face.attributes.facialHair.beard.stringValue];
             obj.smileText = [NSString stringWithFormat:@"Smile: %@", face.attributes.smile];
+            obj.glassesText = [NSString stringWithFormat:@"Glasses: %@", face.attributes.glasses];
+            obj.emotionText = [NSString stringWithFormat:@"Emotion: %@: %@", face.attributes.emotion.mostEmotion, face.attributes.emotion.mostEmotionValue];
+            obj.facialHairText = [NSString stringWithFormat:@"Moustache: %@, Beard: %@", face.attributes.facialHair.mustache.stringValue, face.attributes.facialHair.beard.stringValue];
+            obj.headPoseText = [NSString stringWithFormat:@"headPose: roll(%@), yaw(%@)", face.attributes.headPose.roll.stringValue, face.attributes.headPose.yaw.stringValue];
             [_detectionFaces addObject:obj];
         }
         [_resultTableView reloadData];
@@ -267,7 +271,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 120;
+    return 168;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -280,9 +284,11 @@
     MPODetectionFaceObject * obj = _detectionFaces[indexPath.row];
     cell.ageText = obj.ageText;
     cell.genderText = obj.genderText;
-    cell.headPoseText = obj.headPoseText;
-    cell.moustacheText = obj.moustacheText;
     cell.smileText = obj.smileText;
+    cell.glassesText = obj.glassesText;
+    cell.facialHairText = obj.facialHairText;
+    cell.headPoseText = obj.headPoseText;
+    cell.emotionText = obj.emotionText;
     cell.faceImage = obj.croppedFaceImage;
     return cell;
 }
