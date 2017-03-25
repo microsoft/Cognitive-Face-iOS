@@ -325,7 +325,7 @@
             _findBtn.enabled = NO;
             _selectedTargetIndex = -1;
         }
-        _imageCountLabel.text =  [NSString stringWithFormat:@"%ld faces in total", _selectedFaces.count];
+        _imageCountLabel.text =  [NSString stringWithFormat:@"%d faces in total", (int32_t)_selectedFaces.count];
         [_imageContainer0 reloadData];
         [_imageContainer1 reloadData];
         if (collection.count == 0) {
