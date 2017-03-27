@@ -29,20 +29,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import "MPOOcclusion.h"
 
-@interface MPODetectionCell : UITableViewCell
-
-@property (nonatomic, retain) NSString *genderText;
-@property (nonatomic, retain) NSString *ageText;
-@property (nonatomic, retain) NSString *hairText;
-@property (nonatomic, retain) NSString *facialHairText;
-@property (nonatomic, retain) NSString *makeupText;
-@property (nonatomic, retain) NSString *emotionText;
-@property (nonatomic, retain) NSString *occlusionText;
-@property (nonatomic, retain) NSString *exposureText;
-@property (nonatomic, retain) NSString *headPoseText;
-@property (nonatomic, retain) NSString *accessoriesText;
-@property (nonatomic, retain) UIImage *faceImage;
-
+@implementation MPOOcclusion
+-(instancetype)initWithDictionary:(NSDictionary *)dict {
+    self = [super init];
+    if (self) {
+        self.foreheadOccluded = dict[@"foreheadOccluded"];
+        self.eyeOccluded = dict[@"eyeOccluded"];
+        self.mouthOccluded = dict[@"mouthOccluded"];
+    }
+    return self;
+}
 @end
