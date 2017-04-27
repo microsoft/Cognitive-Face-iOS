@@ -46,37 +46,37 @@
 
         self.mostEmotion = @"anger";
         self.mostEmotionValue = self.anger;
-        if (self.contempt > self.mostEmotionValue)
+        if ([self.contempt doubleValue] > [self.mostEmotionValue doubleValue])
         {
             self.mostEmotion = @"contempt";
             self.mostEmotionValue = self.contempt;
         }
-        if (self.disgust > self.mostEmotionValue)
+        if ([self.disgust doubleValue] > [self.mostEmotionValue doubleValue])
         {
             self.mostEmotion = @"disgust";
             self.mostEmotionValue = self.disgust;
         }
-        if (self.fear > self.mostEmotionValue)
+        if ([self.fear doubleValue] > [self.mostEmotionValue doubleValue])
         {
             self.mostEmotion = @"fear";
             self.mostEmotionValue = self.fear;
         }
-        if (self.happiness > self.mostEmotionValue)
+        if ([self.happiness doubleValue] > [self.mostEmotionValue doubleValue])
         {
             self.mostEmotion = @"happiness";
             self.mostEmotionValue = self.happiness;
         }
-        if (self.neutral > self.mostEmotionValue)
+        if ([self.neutral doubleValue] > [self.mostEmotionValue doubleValue])
         {
             self.mostEmotion = @"neutral";
-            self.mostEmotionValue = self.contempt;
+            self.mostEmotionValue = self.neutral;
         }
-        if (self.sadness > self.mostEmotionValue)
+        if ([self.sadness doubleValue] > [self.mostEmotionValue doubleValue])
         {
             self.mostEmotion = @"sadness";
             self.mostEmotionValue = self.sadness;
         }
-        if (self.surprise > self.mostEmotionValue)
+        if ([self.surprise doubleValue] > [self.mostEmotionValue doubleValue])
         {
             self.mostEmotion = @"surprise";
             self.mostEmotionValue = self.surprise;
