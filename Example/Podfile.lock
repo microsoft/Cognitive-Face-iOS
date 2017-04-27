@@ -1,5 +1,5 @@
 PODS:
-  - ProjectOxfordFace (1.2.5)
+  - ProjectOxfordFace (1.2.6)
 
 DEPENDENCIES:
   - ProjectOxfordFace (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ProjectOxfordFace: 761eb5af9b3718fd969d1249c6ff83b6d33cf163
+  ProjectOxfordFace: 8a82bd18dfd4a9e7df9afa9e93a56bd6c837c122
 
 PODFILE CHECKSUM: a5d2c084667aa893cf7f8e0a5e76252611a40a74
 
