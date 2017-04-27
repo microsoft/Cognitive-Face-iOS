@@ -36,7 +36,7 @@
     self = [super init];
     if (self) {
         self.personId = dict[@"personId"];
-        self.faceIds = dict[@"faceIds"];
+        self.persistedFaceIds = dict[@"persistedFaceIds"];
         self.name = dict[@"name"];
         self.userData = dict[@"userData"];
     }

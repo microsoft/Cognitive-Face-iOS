@@ -32,7 +32,7 @@
 #import <Foundation/Foundation.h>
 
 @interface MPOPersonFace : NSObject
-@property NSString *faceId;
+@property NSString *persistedFaceId;
 @property NSString *userData;
 -(instancetype)initWithDictionary:(NSDictionary *)dict;
 @end

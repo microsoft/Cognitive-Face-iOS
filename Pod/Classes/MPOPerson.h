@@ -33,7 +33,7 @@
 
 @interface MPOPerson : NSObject
 @property NSString *personId;
-@property NSArray *faceIds;
+@property NSArray *persistedFaceIds;
 @property NSString *name;
 @property NSString *userData;
 -(instancetype)initWithDictionary:(NSDictionary *)dict;
