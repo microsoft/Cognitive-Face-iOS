@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ProjectOxfordFace"
-  s.version          = "1.2.5"
+  s.version          = "1.2.6"
   s.summary          = "Microsoft Cognitive Services - Face API iOS SDK"
 
   s.description  = <<-DESC

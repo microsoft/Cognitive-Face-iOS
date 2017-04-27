@@ -35,7 +35,7 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
     if (self) {
-        self.faceId = dict[@"faceId"];
+        self.persistedFaceId = dict[@"persistedFaceId"];
         self.userData = dict[@"userData"];
     }
     return self;
