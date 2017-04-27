@@ -67,8 +67,8 @@ typedef void (^MPOFaceListMetadataArrayCompletionBlock)(NSArray<MPOFaceListMetad
 
 /**
  *  Creates an instance of MPOFaceServiceClient
- *  @param key @param key subscription key to use face api
- *  @return @return MPOFaceServiceClient
+ *  @param key subscription key to use face api
+ *  @return MPOFaceServiceClient
  */
 - (id)initWithSubscriptionKey:(NSString *)key;
 
