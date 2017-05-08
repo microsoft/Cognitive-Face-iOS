@@ -33,6 +33,13 @@
 #import "MPOFacialHair.h"
 #import "MPOFaceHeadPose.h"
 #import "MPOFaceEmotion.h"
+#import "MPOHair.h"
+#import "MPOMakeup.h"
+#import "MPOOcclusion.h"
+#import "MPOAccessories.h"
+#import "MPOBlur.h"
+#import "MPOExposure.h"
+#import "MPONoise.h"
 
 @interface MPOFaceAttributes : NSObject
 @property NSNumber *age;
@@ -42,5 +49,12 @@
 @property MPOFacialHair *facialHair;
 @property MPOFaceHeadPose *headPose;
 @property MPOFaceEmotion *emotion;
+@property MPOHair *hair;
+@property MPOMakeup *makeup;
+@property MPOOcclusion *occlusion;
+@property MPOAccessories *accessories;
+@property MPOBlur *blur;
+@property MPOExposure *exposure;
+@property MPONoise *noise;
 -(instancetype)initWithDictionary:(NSDictionary *)dict;
 @end

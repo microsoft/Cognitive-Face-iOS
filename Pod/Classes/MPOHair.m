@@ -29,20 +29,39 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import "MPOHair.h"
 
-@interface MPODetectionCell : UITableViewCell
+@implementation MPOHair
+-(instancetype)initWithDictionary:(NSDictionary *)dict {
+    self = [super init];
+    if (self) {
+        self.bald = dict[@"bald"];
+        self.invisible = dict[@"invisible"];
+        self.hairColor = dict[@"hairColor"];
 
-@property (nonatomic, retain) NSString *genderText;
-@property (nonatomic, retain) NSString *ageText;
-@property (nonatomic, retain) NSString *hairText;
-@property (nonatomic, retain) NSString *facialHairText;
-@property (nonatomic, retain) NSString *makeupText;
-@property (nonatomic, retain) NSString *emotionText;
-@property (nonatomic, retain) NSString *occlusionText;
-@property (nonatomic, retain) NSString *exposureText;
-@property (nonatomic, retain) NSString *headPoseText;
-@property (nonatomic, retain) NSString *accessoriesText;
-@property (nonatomic, retain) UIImage *faceImage;
-
+        if (self.hairColor.count == 0){
+            if ([self.invisible boolValue])
+            {
+                self.hair = @"Invisible";
+            }
+            else
+            {
+                self.hair = @"bald";
+            }
+        }
+        else {
+            self.hair = @"";
+            double hairMaxConfidence = 0.0;
+            for (NSDictionary *hairColor in self.hairColor)
+            {
+                if ([hairColor[@"confidence"] doubleValue] > hairMaxConfidence)
+                {
+                    self.hair = hairColor[@"color"];
+                    hairMaxConfidence = [hairColor[@"confidence"] doubleValue];
+                }
+            }
+        }
+    }
+    return self;
+}
 @end

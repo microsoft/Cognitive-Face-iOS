@@ -41,6 +41,13 @@
         self.facialHair = [[MPOFacialHair alloc] initWithDictionary:dict[@"facialHair"]];
         self.emotion = [[MPOFaceEmotion alloc] initWithDictionary:dict[@"emotion"]];
         self.headPose = [[MPOFaceHeadPose alloc] initWithDictionary:dict[@"headPose"]];
+        self.hair = [[MPOHair alloc] initWithDictionary:dict[@"hair"]];
+        self.makeup = [[MPOMakeup alloc] initWithDictionary:dict[@"makeup"]];
+        self.occlusion = [[MPOOcclusion alloc] initWithDictionary:dict[@"occlusion"]];
+        self.accessories = [[MPOAccessories alloc] initWithArray:dict[@"accessories"]];
+        self.blur = [[MPOBlur alloc] initWithDictionary:dict[@"blur"]];
+        self.exposure = [[MPOExposure alloc] initWithDictionary:dict[@"exposure"]];
+        self.noise = [[MPONoise alloc] initWithDictionary:dict[@"noise"]];
     }
     return self;
 }

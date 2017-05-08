@@ -32,60 +32,78 @@
 #import "MPODetectionCell.h"
 
 @implementation MPODetectionCell {
-    UILabel * ageLabel;
     UILabel * genderLabel;
-    UILabel * smileLabel;
-    UILabel * glassesLabel;
+    UILabel * ageLabel;
+    UILabel * hairLabel;
+    UILabel * facialHairLabel;
+    UILabel * makeupLabel;
     UILabel * emotionLabel;
-    UILabel * moustacheLabel;
+    UILabel * occlusionLabel;
+    UILabel * exposureLabel;
     UILabel * headPoseLabel;
+    UILabel * accessoriesLabel;
     UIImageView * faceImageView;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        ageLabel.textColor = [UIColor grayColor];
-        ageLabel.textAlignment = NSTextAlignmentLeft;
-        ageLabel.font = [UIFont systemFontOfSize:14];
         genderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         genderLabel.textColor = [UIColor grayColor];
         genderLabel.textAlignment = NSTextAlignmentLeft;
-        genderLabel.font = [UIFont systemFontOfSize:14];
-        smileLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        smileLabel.textColor = [UIColor grayColor];
-        smileLabel.textAlignment = NSTextAlignmentLeft;
-        smileLabel.font = [UIFont systemFontOfSize:14];
-        glassesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        glassesLabel.textColor = [UIColor grayColor];
-        glassesLabel.textAlignment = NSTextAlignmentLeft;
-        glassesLabel.font = [UIFont systemFontOfSize:14];
+        genderLabel.font = [UIFont systemFontOfSize:12];
+        ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        ageLabel.textColor = [UIColor grayColor];
+        ageLabel.textAlignment = NSTextAlignmentLeft;
+        ageLabel.font = [UIFont systemFontOfSize:12];
+        hairLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        hairLabel.textColor = [UIColor grayColor];
+        hairLabel.textAlignment = NSTextAlignmentLeft;
+        hairLabel.font = [UIFont systemFontOfSize:12];
+        facialHairLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        facialHairLabel.textColor = [UIColor grayColor];
+        facialHairLabel.textAlignment = NSTextAlignmentLeft;
+        facialHairLabel.font = [UIFont systemFontOfSize:12];
+        makeupLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        makeupLabel.textColor = [UIColor grayColor];
+        makeupLabel.textAlignment = NSTextAlignmentLeft;
+        makeupLabel.font = [UIFont systemFontOfSize:12];
         emotionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         emotionLabel.textColor = [UIColor grayColor];
         emotionLabel.textAlignment = NSTextAlignmentLeft;
-        emotionLabel.font = [UIFont systemFontOfSize:14];
-        moustacheLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        moustacheLabel.textColor = [UIColor grayColor];
-        moustacheLabel.textAlignment = NSTextAlignmentLeft;
-        moustacheLabel.font = [UIFont systemFontOfSize:14];
+        emotionLabel.font = [UIFont systemFontOfSize:12];
+        occlusionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        occlusionLabel.textColor = [UIColor grayColor];
+        occlusionLabel.textAlignment = NSTextAlignmentLeft;
+        occlusionLabel.font = [UIFont systemFontOfSize:12];
+        exposureLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        exposureLabel.textColor = [UIColor grayColor];
+        exposureLabel.textAlignment = NSTextAlignmentLeft;
+        exposureLabel.font = [UIFont systemFontOfSize:12];
         headPoseLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         headPoseLabel.textColor = [UIColor grayColor];
         headPoseLabel.textAlignment = NSTextAlignmentLeft;
         headPoseLabel.font = [UIFont systemFontOfSize:12];
+        accessoriesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        accessoriesLabel.textColor = [UIColor grayColor];
+        accessoriesLabel.textAlignment = NSTextAlignmentLeft;
+        accessoriesLabel.font = [UIFont systemFontOfSize:12];
         faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 45, 45)];
         faceImageView.center = self.center;
         faceImageView.top = 10;
         faceImageView.left = 10;
         faceImageView.clipsToBounds = YES;
         faceImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self.contentView addSubview:ageLabel];
         [self.contentView addSubview:genderLabel];
-        [self.contentView addSubview:smileLabel];
-        [self.contentView addSubview:glassesLabel];
+        [self.contentView addSubview:ageLabel];
+        [self.contentView addSubview:hairLabel];
+        [self.contentView addSubview:facialHairLabel];
+        [self.contentView addSubview:makeupLabel];
         [self.contentView addSubview:emotionLabel];
-        [self.contentView addSubview:moustacheLabel];
+        [self.contentView addSubview:occlusionLabel];
+        [self.contentView addSubview:exposureLabel];
         [self.contentView addSubview:headPoseLabel];
+        [self.contentView addSubview:accessoriesLabel];
         [self.contentView addSubview:faceImageView];
         self.backgroundColor = [UIColor clearColor];
     }
@@ -94,48 +112,68 @@
 
 -(void)layoutSubviews{
     [super layoutSubviews];
-    if (_ageText) {
-        ageLabel.text = _ageText;
-    }
-    [ageLabel sizeToFit];
-    ageLabel.left = faceImageView.right + 20;
-    ageLabel.top = 10;
     if (_genderText) {
         genderLabel.text = _genderText;
     }
     [genderLabel sizeToFit];
     genderLabel.left = faceImageView.right + 20;
-    genderLabel.top = ageLabel.bottom + 5;
-    if (_smileText) {
-        smileLabel.text = _smileText;
+    genderLabel.top = 10;
+    if (_ageText) {
+        ageLabel.text = _ageText;
     }
-    [smileLabel sizeToFit];
-    smileLabel.left = faceImageView.right + 20;
-    smileLabel.top = genderLabel.bottom + 5;
-    if (_glassesText) {
-        glassesLabel.text = _glassesText;
+    [ageLabel sizeToFit];
+    ageLabel.left = genderLabel.right + 10;
+    ageLabel.top = 10;
+    if (_hairText) {
+        hairLabel.text = _hairText;
     }
-    [glassesLabel sizeToFit];
-    glassesLabel.left = faceImageView.right + 20;
-    glassesLabel.top = smileLabel.bottom + 5;
+    [hairLabel sizeToFit];
+    hairLabel.left = faceImageView.right + 20;
+    hairLabel.top = ageLabel.bottom + 5;
+    if (_facialHairText) {
+        facialHairLabel.text = _facialHairText;
+    }
+    [facialHairLabel sizeToFit];
+    facialHairLabel.left = hairLabel.right + 10;
+    facialHairLabel.top = ageLabel.bottom + 5;
+    if (_makeupText) {
+        makeupLabel.text = _makeupText;
+    }
+    [makeupLabel sizeToFit];
+    makeupLabel.left = faceImageView.right + 20;
+    makeupLabel.top = hairLabel.bottom + 5;
     if (_emotionText) {
         emotionLabel.text = _emotionText;
     }
     [emotionLabel sizeToFit];
-    emotionLabel.left = faceImageView.right + 20;
-    emotionLabel.top = glassesLabel.bottom + 5;
-    if (_facialHairText) {
-        moustacheLabel.text = _facialHairText;
+    emotionLabel.left = makeupLabel.right + 10;
+    emotionLabel.top = hairLabel.bottom + 5;
+    if (_occlusionText)
+    {
+        occlusionLabel.text = _occlusionText;
     }
-    [moustacheLabel sizeToFit];
-    moustacheLabel.left = faceImageView.right + 20;
-    moustacheLabel.top = emotionLabel.bottom + 5;
+    [occlusionLabel sizeToFit];
+    occlusionLabel.left = faceImageView.right + 20;
+    occlusionLabel.top = makeupLabel.bottom + 5;
+    if (_exposureText)
+    {
+        exposureLabel.text = _exposureText;
+    }
+    [exposureLabel sizeToFit];
+    exposureLabel.left = occlusionLabel.right + 10;
+    exposureLabel.top = makeupLabel.bottom + 5;
     if (_headPoseText) {
         headPoseLabel.text = _headPoseText;
     }
     [headPoseLabel sizeToFit];
     headPoseLabel.left = faceImageView.right + 20;
-    headPoseLabel.top = moustacheLabel.bottom + 5;
+    headPoseLabel.top = occlusionLabel.bottom + 5;
+    if (_accessoriesText) {
+        accessoriesLabel.text = _accessoriesText;
+    }
+    [accessoriesLabel sizeToFit];
+    accessoriesLabel.left = faceImageView.right + 20;
+    accessoriesLabel.top = headPoseLabel.bottom + 5;
     if (_faceImage) {
         faceImageView.image = _faceImage;
     }

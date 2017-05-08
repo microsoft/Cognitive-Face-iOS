@@ -64,7 +64,6 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
         if ([number isEqualToNumber:@(MPOFaceAttributeTypeAge)]) {
             [faceAttributesStringArray addObject:@"age"];
         }
-        
         if ([number isEqualToNumber:@(MPOFaceAttributeTypeGender)]) {
             [faceAttributesStringArray addObject:@"gender"];
         }
@@ -82,6 +81,27 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
         }
         if ([number isEqualToNumber:@(MPOFaceAttributeTypeEmotion)]) {
             [faceAttributesStringArray addObject:@"emotion"];
+        }
+        if ([number isEqualToNumber:@(MPOFaceAttributeTypeHair)]) {
+            [faceAttributesStringArray addObject:@"hair"];
+        }
+        if ([number isEqualToNumber:@(MPOFaceAttributeTypeMakeup)]) {
+            [faceAttributesStringArray addObject:@"makeup"];
+        }
+        if ([number isEqualToNumber:@(MPOFaceAttributeTypeOcclusion)]) {
+            [faceAttributesStringArray addObject:@"occlusion"];
+        }
+        if ([number isEqualToNumber:@(MPOFaceAttributeTypeAccessories)]) {
+            [faceAttributesStringArray addObject:@"accessories"];
+        }
+        if ([number isEqualToNumber:@(MPOFaceAttributeTypeBlur)]) {
+            [faceAttributesStringArray addObject:@"blur"];
+        }
+        if ([number isEqualToNumber:@(MPOFaceAttributeTypeExposure)]) {
+            [faceAttributesStringArray addObject:@"exposure"];
+        }
+        if ([number isEqualToNumber:@(MPOFaceAttributeTypeNoise)]) {
+            [faceAttributesStringArray addObject:@"noise"];
         }
     }
     
@@ -416,13 +436,20 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 
 - (NSURLSessionDataTask *)getPersonsWithPersonGroupId:(NSString *)personGroupId completionBlock:(MPOPersonArrayCompletionBlock)completion {
     
-    return [self listPersonsWithPersonGroupId:personGroupId completionBlock:completion];
-    
+    return [self listPersonsWithPersonGroupIdAndStart:personGroupId start:nil top:1000 completionBlock:completion];
 }
 
 - (NSURLSessionDataTask *)listPersonsWithPersonGroupId:(NSString *)personGroupId completionBlock:(MPOPersonArrayCompletionBlock)completion {
     
-    return [self startTaskWithHttpMethod:@"GET" path:[NSString stringWithFormat:@"persongroups/%@/persons", personGroupId] parameters:nil urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
+    return [self listPersonsWithPersonGroupIdAndStart:personGroupId start:nil top:1000 completionBlock:completion];
+}
+
+- (NSURLSessionDataTask *)listPersonsWithPersonGroupIdAndStart:(NSString *)personGroupId start:(NSString *)start top:(NSInteger)top completionBlock:(MPOPersonArrayCompletionBlock)completion {
+    NSString * url = [NSString stringWithFormat:@"persongroups/%@/persons?top=%ld", personGroupId, (long)top];
+    if (start != nil) {
+        url = [url stringByAppendingString:[NSString stringWithFormat:@"&start=%@", start]];
+    }
+    return [self startTaskWithHttpMethod:@"GET" path:url parameters:nil urlParams:nil bodyData:nil completion:^(NSURLResponse *response, id responseObject, NSError *error) {
         
         NSMutableArray *personCollection = [[NSMutableArray alloc] init];
         
@@ -436,7 +463,6 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
         
         [self runCompletionOnMainQueueWithBlock:completion object:personCollection error:error];
     }];
-    
 }
 
 - (NSURLSessionDataTask *)getPersonFaceWithPersonGroupId:(NSString *)personGroupId personId:(NSString *)personId persistedFaceId:(NSString *)persistedFaceId completionBlock:(void (^) (MPOPersonFace *personFace, NSError *error))completion {

@@ -48,6 +48,13 @@ typedef enum {
     MPOFaceAttributeTypeFacialHair,
     MPOFaceAttributeTypeHeadPose,
     MPOFaceAttributeTypeEmotion,
+    MPOFaceAttributeTypeHair,
+    MPOFaceAttributeTypeMakeup,
+    MPOFaceAttributeTypeOcclusion,
+    MPOFaceAttributeTypeAccessories,
+    MPOFaceAttributeTypeBlur,
+    MPOFaceAttributeTypeExposure,
+    MPOFaceAttributeTypeNoise,
 } MPOFaceAttributeType;
 
 typedef enum {

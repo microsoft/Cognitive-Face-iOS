@@ -29,20 +29,28 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
+#import "MPOAccessories.h"
 
-@interface MPODetectionCell : UITableViewCell
+@implementation MPOAccessories
+-(instancetype)initWithArray:(NSArray *)array {
+    self = [super init];
+    if (self) {
+        self.accessories = array;
 
-@property (nonatomic, retain) NSString *genderText;
-@property (nonatomic, retain) NSString *ageText;
-@property (nonatomic, retain) NSString *hairText;
-@property (nonatomic, retain) NSString *facialHairText;
-@property (nonatomic, retain) NSString *makeupText;
-@property (nonatomic, retain) NSString *emotionText;
-@property (nonatomic, retain) NSString *occlusionText;
-@property (nonatomic, retain) NSString *exposureText;
-@property (nonatomic, retain) NSString *headPoseText;
-@property (nonatomic, retain) NSString *accessoriesText;
-@property (nonatomic, retain) UIImage *faceImage;
-
+        if (self.accessories.count > 0)
+        {
+            self.accessoriesArray = [[NSMutableArray alloc] init];
+            for (NSDictionary *accessory in self.accessories)
+            {
+                [self.accessoriesArray addObject:accessory[@"type"]];
+            }
+            self.accessoriesString = [self.accessoriesArray componentsJoinedByString:@","];
+        }
+        else
+        {
+            self.accessoriesString = @"NoAccessories";
+        }
+    }
+    return self;
+}
 @end
