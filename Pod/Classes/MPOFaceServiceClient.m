@@ -31,10 +31,13 @@
 
 #import "MPOFaceServiceClient.h"
 
+static NSString *const DefaultEndpoint = @"https://westus.api.cognitive.microsoft.com/face/v1.0/";
+
 @interface MPOFaceServiceClient ()
 //private properties
 typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObject, NSError *error);
 @property NSString* subscriptionKey;
+@property NSString* endpoint;
 @end
 
 
@@ -45,10 +48,24 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
     self = [super init];
     if (self) {
         self.subscriptionKey = key;
+        self.endpoint = DefaultEndpoint;
     }
     
     return self;
 }
+
+- (id)initWithEndpointAndSubscriptionKey:(NSString *)endpoint key:(NSString *)key {
+
+    self = [super init];
+    if (self) {
+        self.endpoint = endpoint;
+        self.subscriptionKey = key;
+    }
+
+    return self;
+}
+
+
 
 #pragma mark Face
 /*
@@ -642,8 +659,6 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 
 - (NSURLSessionDataTask *)startTaskWithHttpMethod:(NSString *)httpMethod path:(NSString *)path parameters:(NSDictionary *)params urlParams:(NSDictionary *)urlParams bodyData:(NSData *)bodyData completion:(PORequestCompletionBlock)completion {
     
-    NSString *basePath = @"https://westus.api.cognitive.microsoft.com/face/v1.0/";
-    
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     
     if (!bodyData) {
@@ -680,7 +695,7 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
     }
     
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", basePath, path, queryString]]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", self.endpoint, path, queryString]]];
     
     request.HTTPMethod = httpMethod;
     

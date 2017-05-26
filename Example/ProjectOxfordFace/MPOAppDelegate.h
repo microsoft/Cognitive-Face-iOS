@@ -33,6 +33,7 @@
 #import <CoreData/CoreData.h>
 
 static NSString *const ProjectOxfordFaceSubscriptionKey = @"Your Subscription Key";
+static NSString *const ProjectOxfordFaceEndpoint = @"https://westus.api.cognitive.microsoft.com/face/v1.0/";
 
 @interface MPOAppDelegate : UIResponder <UIApplicationDelegate>
 
