@@ -104,7 +104,7 @@
         [faceIds addObject:obj.face.faceId];
     }
     
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:ProjectOxfordFaceSubscriptionKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
     
     [client findSimilarWithFaceId:_baseFaces[_selectedTargetIndex].face.faceId faceIds:faceIds completionBlock:^(NSArray<MPOSimilarFace *> *collection, NSError *error) {
         [HUD removeFromSuperview];
@@ -298,7 +298,7 @@
     HUD.labelText = @"Detecting faces";
     [HUD show: YES];
     
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:ProjectOxfordFaceSubscriptionKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
     NSData *data = UIImageJPEGRepresentation(_selectedImage, 0.8);
     [client detectWithData:data returnFaceId:YES returnFaceLandmarks:YES returnFaceAttributes:@[] completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
         [HUD removeFromSuperview];

@@ -87,7 +87,7 @@
     HUD.labelText = @"Adding faces";
     [HUD show: YES];
     
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:ProjectOxfordFaceSubscriptionKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
     NSData *data = UIImageJPEGRepresentation(self.image, 0.8);
     
     [client addPersonFaceWithPersonGroupId:self.group.groupId personId:self.person.personId data:data userData:nil faceRectangle:face.face.faceRectangle completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {

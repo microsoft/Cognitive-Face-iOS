@@ -94,7 +94,7 @@
     [self.navigationController.view addSubview:HUD];
     HUD.labelText = @"Identifying faces";
     [HUD show: YES];
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:ProjectOxfordFaceSubscriptionKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
     [client identifyWithPersonGroupId:group.groupId faceIds:faceIds maxNumberOfCandidates:group.people.count completionBlock:^(NSArray<MPOIdentifyResult *> *collection, NSError *error) {
         [HUD removeFromSuperview];
         if (error) {
@@ -311,7 +311,7 @@
     HUD.labelText = @"detecting faces";
     [HUD show: YES];
     
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:ProjectOxfordFaceSubscriptionKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
     NSData *data = UIImageJPEGRepresentation(image, 0.8);
     [client detectWithData:data returnFaceId:YES returnFaceLandmarks:YES returnFaceAttributes:@[] completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
         [HUD removeFromSuperview];
