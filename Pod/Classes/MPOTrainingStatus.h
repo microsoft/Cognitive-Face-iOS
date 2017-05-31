@@ -32,9 +32,9 @@
 #import <Foundation/Foundation.h>
 
 @interface MPOTrainingStatus : NSObject
-@property NSString *personGroupId;
 @property NSString *status;
-@property NSString *startTime;
-@property NSString *endTime;
+@property NSString *createdDateTime;
+@property NSString *lastActionDateTime;
+@property NSString *message;
 -(instancetype)initWithDictionary:(NSDictionary *)dict;
 @end
