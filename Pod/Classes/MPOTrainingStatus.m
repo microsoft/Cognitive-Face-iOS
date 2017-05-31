@@ -34,10 +34,10 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
     if (self) {
-        self.personGroupId = dict[@"personGroupId"];
         self.status = dict[@"status"];
-        self.startTime = dict[@"startTime"];
-        self.endTime = dict[@"endTime"];
+        self.createdDateTime = dict[@"createdDateTime"];
+        self.lastActionDateTime = dict[@"lastActionDateTime"];
+        self.message = dict[@"message"];
     }
     return self;
 }
