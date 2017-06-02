@@ -43,6 +43,7 @@
 @property MPOFaceFeatureCoordinate *eyeLeftTop;
 @property MPOFaceFeatureCoordinate *eyeLeftBottom;
 @property MPOFaceFeatureCoordinate *eyeLeftInner;
+@property MPOFaceFeatureCoordinate *eyebrowRightOuter;
 @property MPOFaceFeatureCoordinate *eyebrowRightInner;
 @property MPOFaceFeatureCoordinate *eyeRightInner;
 @property MPOFaceFeatureCoordinate *eyeRightTop;

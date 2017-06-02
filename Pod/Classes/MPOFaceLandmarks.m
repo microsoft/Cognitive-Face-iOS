@@ -46,6 +46,7 @@
         self.eyeLeftTop = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"eyeLeftTop"]];
         self.eyeLeftBottom = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"eyeLeftBottom"]];
         self.eyeLeftInner = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"eyeLeftInner"]];
+        self.eyebrowRightOuter = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"eyebrowRightOuter"]];
         self.eyebrowRightInner = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"eyebrowRightInner"]];
         self.eyeRightInner = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"eyeRightInner"]];
         self.eyeRightTop = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"eyeRightTop"]];
