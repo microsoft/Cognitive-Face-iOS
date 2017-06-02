@@ -56,6 +56,7 @@
         self.noseRootRight = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"noseRootRight"]];
         self.noseLeftAlarTop = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"noseLeftAlarTop"]];
         self.noseLeftAlarOutTip = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"noseLeftAlarOutTip"]];
+        self.noseRightAlarTop = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"noseRightAlarTop"]];
         self.noseRightAlarOutTip = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"noseRightAlarOutTip"]];
         self.upperLipTop = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"upperLipTop"]];
         self.upperLipBottom = [[MPOFaceFeatureCoordinate alloc] initWithDictionary:dict[@"upperLipBottom"]];

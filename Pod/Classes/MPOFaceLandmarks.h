@@ -53,6 +53,7 @@
 @property MPOFaceFeatureCoordinate *noseRootRight;
 @property MPOFaceFeatureCoordinate *noseLeftAlarTop;
 @property MPOFaceFeatureCoordinate *noseLeftAlarOutTip;
+@property MPOFaceFeatureCoordinate *noseRightAlarTop;
 @property MPOFaceFeatureCoordinate *noseRightAlarOutTip;
 @property MPOFaceFeatureCoordinate *upperLipTop;
 @property MPOFaceFeatureCoordinate *upperLipBottom;
