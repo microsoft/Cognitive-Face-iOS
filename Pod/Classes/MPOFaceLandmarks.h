@@ -43,6 +43,7 @@
 @property MPOFaceFeatureCoordinate *eyeLeftTop;
 @property MPOFaceFeatureCoordinate *eyeLeftBottom;
 @property MPOFaceFeatureCoordinate *eyeLeftInner;
+@property MPOFaceFeatureCoordinate *eyebrowRightOuter;
 @property MPOFaceFeatureCoordinate *eyebrowRightInner;
 @property MPOFaceFeatureCoordinate *eyeRightInner;
 @property MPOFaceFeatureCoordinate *eyeRightTop;
@@ -52,6 +53,7 @@
 @property MPOFaceFeatureCoordinate *noseRootRight;
 @property MPOFaceFeatureCoordinate *noseLeftAlarTop;
 @property MPOFaceFeatureCoordinate *noseLeftAlarOutTip;
+@property MPOFaceFeatureCoordinate *noseRightAlarTop;
 @property MPOFaceFeatureCoordinate *noseRightAlarOutTip;
 @property MPOFaceFeatureCoordinate *upperLipTop;
 @property MPOFaceFeatureCoordinate *upperLipBottom;
