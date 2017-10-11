@@ -61,8 +61,8 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"asynchronous request"];
     
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
-
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
+    
     NSArray *faceIds = [self.testDataDict allValues];
 
     [client groupWithFaceIds:faceIds completionBlock:^(MPOGroupResult *groupResult, NSError *error) {
@@ -71,32 +71,24 @@
             XCTFail("fail");
         }
         else {
-            
             XCTAssertEqual(groupResult.groups.count, 2);
             XCTAssertEqual(groupResult.messeyGroup.count, 1);
-
             for (NSArray *group in groupResult.groups) {
-                
                 if (group.count == 3) {
                     //chris
                     XCTAssertTrue([group containsObject:self.testDataDict[@"chris1"]]);
                     XCTAssertTrue([group containsObject:self.testDataDict[@"chris2"]]);
                     XCTAssertTrue([group containsObject:self.testDataDict[@"chris3"]]);
-                    
                 }
                 else if (group.count == 2) {
                     //alberto
                     XCTAssertTrue([group containsObject:self.testDataDict[@"alberto1"]]);
                     XCTAssertTrue([group containsObject:self.testDataDict[@"alberto2"]]);
                 }
-                
             }
-            
             //michelle1 should be in messeyGroup
             XCTAssertTrue([groupResult.messeyGroup containsObject:self.testDataDict[@"john1"]]);
-            
         }
-        
         [expectation fulfill];
         
     }];
@@ -104,4 +96,5 @@
     [self waitForExpectationsWithTimeout:10.0 handler:nil];
     
 }
+
 @end

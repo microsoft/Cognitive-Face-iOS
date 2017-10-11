@@ -53,7 +53,7 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"asynchronous request"];
     
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
     [client detectWithData:UIImageJPEGRepresentation([UIImage imageNamed:kChrisImageName1], 1.0) returnFaceId:YES returnFaceLandmarks:YES returnFaceAttributes:@[@(MPOFaceAttributeTypeAge), @(MPOFaceAttributeTypeFacialHair), @(MPOFaceAttributeTypeHeadPose), @(MPOFaceAttributeTypeSmile), @(MPOFaceAttributeTypeGender)] completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
         
@@ -62,21 +62,16 @@
         }
         else {
             XCTAssertEqual(collection.count, 1);
-            
             for (MPOFace *face in collection) {
-                
-                XCTAssertEqual([face.attributes.age integerValue], 42);
+                XCTAssertEqual([face.attributes.age integerValue], 43);
                 XCTAssertEqualObjects(face.attributes.gender, @"male");
                 XCTAssertNotNil(face.faceRectangle);
                 XCTAssertNotNil(face.faceLandmarks);
             }
-            
         }
-        
         [expectation fulfill];
         
     }];
-    
     
     [self waitForExpectationsWithTimeout:10.0 handler:nil];
     

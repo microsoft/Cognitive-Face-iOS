@@ -33,6 +33,7 @@
 
 #import "MPOGroupResult.h"
 #import "MPOSimilarFace.h"
+#import "MPOSimilarPersistedFace.h"
 #import "MPOIdentifyResult.h"
 #import "MPOVerifyResult.h"
 #import "MPOFaceHeadPose.h"
@@ -52,4 +53,6 @@
 #import "MPOPersonFace.h"
 #import "MPOPersonGroup.h"
 #import "MPOTrainingStatus.h"
+#import "MPOLargeFaceList.h"
+#import "MPOLargePersonGroup.h"
 #endif

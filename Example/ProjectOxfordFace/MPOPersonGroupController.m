@@ -128,7 +128,7 @@
         HUD.labelText = @"saving group";
         [HUD show: YES];
         
-        [client updatePersonGroupWithPersonGroupId:self.group.groupId name:_groupNameField.text userData:nil completionBlock:^(NSError *error) {
+        [client updateLargePersonGroup:self.group.groupId name:_groupNameField.text userData:nil completionBlock:^(NSError *error) {
             [HUD removeFromSuperview];
             if (error) {
                 [CommonUtil simpleDialog:@"Failed in updating group."];
@@ -218,7 +218,7 @@
     
     NSString * uuid = [[[NSUUID UUID] UUIDString] lowercaseString];
     
-    [client createPersonGroupWithId:uuid name:_groupNameField.text userData:nil completionBlock:^(NSError *error) {
+    [client createLargePersonGroup:uuid name:_groupNameField.text userData:nil completionBlock:^(NSError *error) {
         [HUD removeFromSuperview];
         if (error) {
             [CommonUtil simpleDialog:@"Failed in creating group."];
@@ -246,7 +246,7 @@
     HUD.labelText = @"Training group";
     [HUD show: YES];
     
-    [client trainPersonGroupWithPersonGroupId:self.group.groupId completionBlock:^(NSError *error) {
+    [client trainLargePersonGroup:self.group.groupId completionBlock:^(NSError *error) {
         [HUD removeFromSuperview];
         if (error) {
             [CommonUtil showSimpleHUD:@"Failed in training group." forController:self.navigationController];
@@ -305,7 +305,7 @@
             HUD.labelText = @"Deleting this person";
             [HUD show: YES];
             
-            [client deletePersonWithPersonGroupId:self.group.groupId personId:((GroupPerson*)self.group.people[_selectedPersonIndex]).personId completionBlock:^(NSError *error) {
+            [client deletePersonWithLargePersonGroupId:self.group.groupId personId:((GroupPerson*)self.group.people[_selectedPersonIndex]).personId completionBlock:^(NSError *error) {
                 [HUD removeFromSuperview];
                 if (error) {
                     [CommonUtil showSimpleHUD:@"Failed in deleting this person" forController:self.navigationController];

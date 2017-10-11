@@ -37,8 +37,7 @@
 @implementation MPOTestHelpers
 
 + (NSDictionary *)detectWithDict:(NSDictionary *)dataDict {
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
-
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     NSMutableDictionary *testDataDict = [[NSMutableDictionary alloc] init];
 
     for (NSString *key in dataDict) {
@@ -75,8 +74,7 @@
 }
 
 + (BOOL)addMultiplePersonFaces:(NSArray *)urlArray personGroupId:(NSString *)personGroupId personId:(NSString *)personId {
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
-    dispatch_group_t taskGroup = dispatch_group_create();
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];    dispatch_group_t taskGroup = dispatch_group_create();
 
     __block int facesAdded = 0;
     
@@ -105,8 +103,39 @@
     return YES;
 }
 
++ (BOOL)addMultiplePersonFaces:(NSArray *)urlArray largePersonGroupId:(NSString *)largePersonGroupId personId:(NSString *)personId {
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
+    dispatch_group_t taskGroup = dispatch_group_create();
+    
+    __block int facesAdded = 0;
+    
+    for (NSString *url in urlArray) {
+        dispatch_group_enter(taskGroup);
+        
+        [client addPersonFaceWithLargePersonGroupId:largePersonGroupId personId:personId data:UIImageJPEGRepresentation([UIImage imageNamed:url], 1.0) userData:@"someData" faceRectangle:nil completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {
+            
+            if (error) {
+                [NSException raise:@"Error in detection" format:@"Error: %@", error];
+            }
+            else {
+                dispatch_group_leave(taskGroup);
+                
+                facesAdded++;
+            }
+            
+        }];
+        
+    }
+    
+    // Waiting for threads
+    if (dispatch_group_wait(taskGroup, dispatch_time(DISPATCH_TIME_NOW, 10000000000)) != 0) {
+        
+    }
+    return YES;
+}
+
 + (BOOL)clearAllPersonGroups {
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
     __block BOOL hasSetupCompleted = NO;
     
@@ -161,6 +190,45 @@
 
     [NSThread sleepForTimeInterval:3.0f];
     
+    return hasSetupCompleted;
+}
+
++ (BOOL)clearAllLargePersonGroups {
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
+    __block BOOL hasSetupCompleted = NO;
+    [client listLargePersonGroupsWithCompletion:^(NSArray<MPOLargePersonGroup *> *collection, NSError *error) {
+        if (error) {
+            [NSException raise:@"Error: failed getting person groups" format:@"Error: %@", error];
+        }
+        else {
+            if ([collection count] > 0) {
+                for (MPOLargePersonGroup *personGroup in collection) {
+                    [client deleteLargePersonGroup:personGroup.largePersonGroupId completionBlock:^(NSError *error) {
+                        if (error) {
+                            [NSException raise:@"failed clearing person group" format:@"Error: %@", error];
+                        }
+                        else {
+                            hasSetupCompleted = YES;
+                            
+                        }
+                    }];
+                }
+            }
+            else {
+                hasSetupCompleted = YES;
+            }
+        }
+    }];
+    NSDate *loopUntil = [NSDate dateWithTimeIntervalSinceNow:10];
+    while (hasSetupCompleted == NO && [loopUntil timeIntervalSinceNow] > 0) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                                 beforeDate:loopUntil];
+    }
+    if (!hasSetupCompleted)
+    {
+        [NSException raise:@"Setup has failed" format:@""];
+    }
+    [NSThread sleepForTimeInterval:3.0f];
     return hasSetupCompleted;
 }
 

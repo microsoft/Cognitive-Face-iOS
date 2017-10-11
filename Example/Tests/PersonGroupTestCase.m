@@ -53,10 +53,9 @@
 
 - (void)testPersonGroup {
     
-
     XCTestExpectation *expectation = [self expectationWithDescription:@"asynchronous request"];
     
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
     [client createPersonGroupWithId:@"test_persongroup_id" name:@"test_persongroup_name" userData:@"test_persongroup_userdata" completionBlock:^(NSError *error) {
        
@@ -67,7 +66,6 @@
             [self getPersonGroup:expectation];
         }
         
-        
     }];
     
     [self waitForExpectationsWithTimeout:10.0 handler:nil];
@@ -76,7 +74,7 @@
 
 - (void)getPersonGroup:(XCTestExpectation *)expectation {
  
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
     [client getPersonGroupsWithCompletion:^(NSArray<MPOPersonGroup *> *collection, NSError *error) {
        
@@ -85,42 +83,36 @@
         }
         else {
             XCTAssertEqual(collection.count, 1);
-
             for (MPOPersonGroup *personGroup in collection) {
-
                 XCTAssertEqualObjects(personGroup.personGroupId, @"test_persongroup_id");
                 XCTAssertEqualObjects(personGroup.name, @"test_persongroup_name");
                 XCTAssertEqualObjects(personGroup.userData, @"test_persongroup_userdata");
             }
-            
         }
-        
         [self updatePersonGroup:expectation];
         
     }];
     
 }
 
-
 - (void)updatePersonGroup:(XCTestExpectation *)expectation {
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
+    
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
 
     [client updatePersonGroupWithPersonGroupId:@"test_persongroup_id" name:@"test_persongroup_name_update" userData:@"test_persongroup_userdata_update" completionBlock:^(NSError *error) {
        
         if (error) {
             XCTFail("error");
         }
-        
         [self checkIfUpdateWorked:expectation];
         
     }];
-    
     
 }
 
 - (void)checkIfUpdateWorked:(XCTestExpectation *)expectation {
     
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
     [client getPersonGroupsWithCompletion:^(NSArray *collection, NSError *error) {
         
@@ -129,26 +121,21 @@
         }
         else {
             XCTAssertEqual(collection.count, 1);
-            
             for (MPOPersonGroup *personGroup in collection) {
-                
                 XCTAssertEqualObjects(personGroup.personGroupId, @"test_persongroup_id");
                 XCTAssertEqualObjects(personGroup.name, @"test_persongroup_name_update");
                 XCTAssertEqualObjects(personGroup.userData, @"test_persongroup_userdata_update");
             }
-            
         }
-        
         [self deletePersonGroup:expectation];
         
     }];
-
     
 }
 
 - (void)deletePersonGroup:(XCTestExpectation *)expectation {
     
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
 
     [client deletePersonGroupWithPersonGroupId:@"test_persongroup_id" completionBlock:^(NSError *error) {
         if (error) {
@@ -158,10 +145,11 @@
 
     }];
     
-    
 }
+
 - (void)checkIfDeleteWorked:(XCTestExpectation *)expectation {
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
+    
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
     [client getPersonGroupsWithCompletion:^(NSArray *collection, NSError *error) {
         
@@ -171,10 +159,9 @@
         else {
             XCTAssertEqual(collection.count, 0);
         }
-        
         [expectation fulfill];
+        
     }];
-
     
 }
 

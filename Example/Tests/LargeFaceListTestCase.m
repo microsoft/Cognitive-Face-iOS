@@ -32,16 +32,17 @@
 #import <XCTest/XCTest.h>
 #import "MPOFaceSDK.h"
 #import "MPOTestConstants.h"
-#define kFaceListName @"testfacelistname"
+#define kLargeFaceListName @"testlargefacelist1"
 
-@interface FaceListTestCase : XCTestCase
+@interface LargeFaceListTestCase : XCTestCase
 
 @end
 
-@implementation FaceListTestCase
+@implementation LargeFaceListTestCase
 
 - (void)setUp {
     [super setUp];
+    
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
@@ -51,8 +52,8 @@
     __block BOOL finished = NO;
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
-        
-    [client deleteFaceListWithFaceListId:kFaceListName name:@"chrisfacelistname" userData:@"chrisfacelistuserdata" completionBlock:^(NSError *error) {
+    
+    [client deleteLargeFaceList:kLargeFaceListName name:@"chrisfacelistname" userData:@"chrisfacelistuserdata" completionBlock:^(NSError *error) {
         
         if (error) {
             NSLog(@"error in teardown");
@@ -68,35 +69,34 @@
     }
     
     [super tearDown];
-    
 }
 
-- (void)testCreateFaceList {
+- (void)testCreateCreateFaceList {
     XCTestExpectation *expectation = [self expectationWithDescription:@"asynchronous request"];
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client createFaceListWithFaceListId:kFaceListName name:@"chrisfacelistname" userData:@"chrisfacelistuserdata" completionBlock:^(NSError *error) {
-       
+    [client createLargeFaceList:kLargeFaceListName name:@"chrisfacelistname" userData:@"chrisfacelistuserdata" completionBlock:^(NSError *error) {
+        
         if (error) {
             XCTFail();
         }
         else {
-            [self addFirstFaceToFaceList:expectation];
+            [self addFirstFaceToLargeFaceList:expectation];
         }
         
     }];
     
-    [self waitForExpectationsWithTimeout:20.0 handler:nil];
-
+    [self waitForExpectationsWithTimeout:60.0 handler:nil];
+    
 }
 
-- (void)addFirstFaceToFaceList:(XCTestExpectation *)expectation {
+- (void)addFirstFaceToLargeFaceList:(XCTestExpectation *)expectation {
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client addFacesToFaceListWithFaceListId:kFaceListName data:UIImageJPEGRepresentation([UIImage imageNamed:kChrisImageName1], 1.0) userData:@"chrisfacelistuserdata1" faceRectangle:nil completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {
-       
+    [client addFaceInLargeFaceList:kLargeFaceListName data:UIImageJPEGRepresentation([UIImage imageNamed:kChrisImageName1], 1.0) userData:@"chrisfacelistuserdata1" faceRectangle:nil completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {
+        
         if (error) {
             XCTFail();
         }
@@ -112,55 +112,84 @@
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client addFacesToFaceListWithFaceListId:kFaceListName data:UIImageJPEGRepresentation([UIImage imageNamed:kChrisImageName2], 1.0) userData:@"chrisfacelistuserdata2" faceRectangle:nil completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {
+    [client addFaceInLargeFaceList:kLargeFaceListName data:UIImageJPEGRepresentation([UIImage imageNamed:kChrisImageName2], 1.0) userData:@"chrisfacelistuserdata2" faceRectangle:nil completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {
         
         if (error) {
             XCTFail();
         }
         else {
-            [self listFaceLists:expectation];
+            [self listLargeFaceLists:expectation];
         }
         
     }];
     
 }
 
-- (void)listFaceLists:(XCTestExpectation *)expectation {
+
+- (void)listLargeFaceLists:(XCTestExpectation *)expectation {
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client listFaceListsWithCompletion:^(NSArray<MPOFaceListMetadata *> *collection, NSError *error) {
+    [client listLargeFaceListsWithCompletion:^(NSArray<MPOLargeFaceList *> *collection, NSError *error) {
         
         if (error) {
             XCTFail();
         }
         else {
-            XCTAssertEqual(collection.count, 1);
-            for (MPOFaceListMetadata *faceListMetadata in collection) {
-                XCTAssertEqualObjects(faceListMetadata.faceListId, kFaceListName);
-            }
-            [self getFaceList:expectation];
+            XCTAssertEqual(collection.count, 34);
+            [self getLargeFaceList:expectation];
         }
         
     }];
     
 }
 
-- (void)getFaceList:(XCTestExpectation *)expectation {
+
+- (void)getLargeFaceList:(XCTestExpectation *)expectation {
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client getFaceListWithFaceListId:kFaceListName completionBlock:^(MPOFaceList *faceList, NSError *error) {
-       
+    [client getLargeFaceList:kLargeFaceListName completionBlock:^(MPOLargeFaceList *getLargeFaceList, NSError *error) {
+        
         if (error) {
             XCTFail();
         }
         else {
-            XCTAssertEqualObjects(faceList.faceListId, kFaceListName);
-            XCTAssertEqual(faceList.persistedFaces.count, 2);
-            for (MPOFaceMetadata *faceMetadata in faceList.persistedFaces) {
-                XCTAssertTrue([faceMetadata.userData containsString:@"chrisfacelistuserdata"]);
-            }
+            XCTAssertEqualObjects(getLargeFaceList.largeFaceListId, kLargeFaceListName);
+            [self trainLargeFaceList:expectation];
+        }
+        
+    }];
+    
+}
+
+- (void)trainLargeFaceList:(XCTestExpectation *)expectation {
+    
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
+    
+    [client trainLargeFaceList:kLargeFaceListName completionBlock:^( NSError *error) {
+        
+        if (error) {
+            XCTFail();
+        }
+        else {
+            [self getTrainingSTatus:expectation];
+        }
+        
+    }];
+    
+}
+
+-(void)getTrainingSTatus:(XCTestExpectation *)expectation {
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
+    
+    [client getLargeFaceListTrainingStatus:kLargeFaceListName completionBlock:^(MPOTrainingStatus *trainingStatus, NSError *error) {
+        
+        if (error) {
+            XCTFail();
+        }
+        else {
+            XCTAssertEqualObjects(trainingStatus.status, @"succeeded");
             [expectation fulfill];
         }
         

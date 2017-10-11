@@ -33,24 +33,24 @@
 #import "MPOTestConstants.h"
 #import "MPOTestHelpers.h"
 #import "MPOFaceSDK.h"
-@interface IdentifyTestCase : XCTestCase
+@interface IdentifyLargeTestCase : XCTestCase
 @property NSDictionary *testDataDict;
 @property NSTimer *waitingTimer;
 @property NSMutableDictionary *peopleDataDict;
 
 @end
 
-#define kPersonGroupId @"persongroup"
-#define kPersonGroupName @"persongroupname"
-#define kPersonGroupUserData @"persongroupuserdata"
+#define kLargePersonGroupId @"largepersongroup"
+#define kLargePersonGroupName @"largepersongroupname"
+#define kLargePersonGroupUserData @"largepersongroupuserdata"
 
-@implementation IdentifyTestCase
+@implementation IdentifyLargeTestCase
 
 - (void)setUp {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
     
-    [MPOTestHelpers clearAllPersonGroups];
+    [MPOTestHelpers clearAllLargePersonGroups];
     
     self.peopleDataDict = [[NSMutableDictionary alloc] init];
     
@@ -71,13 +71,13 @@
 }
 
 - (void)testIdentification {
-
+    
     XCTestExpectation *expectation = [self expectationWithDescription:@"asynchronous request"];
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client createPersonGroupWithId:kPersonGroupId name:kPersonGroupName userData:kPersonGroupUserData completionBlock:^(NSError *error) {
-       
+    [client createLargePersonGroup:kLargePersonGroupId name:kLargePersonGroupName userData:kLargePersonGroupUserData completionBlock:^(NSError *error) {
+        
         if (error) {
             XCTFail("fail");
         }
@@ -91,78 +91,74 @@
     
 }
 
-
 - (void)createChrisPerson:(XCTestExpectation *)expectation {
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client createPersonWithPersonGroupId:kPersonGroupId name:@"chris" userData:@"chris_userdata" completionBlock:^(MPOCreatePersonResult *createPersonResult, NSError *error){
+    [client createPersonWithLargePersonGroupId:kLargePersonGroupId name:@"chris" userData:@"chris_userdata" completionBlock:^(MPOCreatePersonResult *createPersonResult, NSError *error) {
         
         if (error) {
             XCTFail("fail");
         }
         else {
             [self.peopleDataDict setObject:createPersonResult.personId forKey:@"chris"];
-            [MPOTestHelpers addMultiplePersonFaces:@[kChrisImageName1, kChrisImageName2, kChrisImageName3] personGroupId:kPersonGroupId personId:createPersonResult.personId];
+            [MPOTestHelpers addMultiplePersonFaces:@[kChrisImageName1, kChrisImageName2, kChrisImageName3] largePersonGroupId:kLargePersonGroupId personId:createPersonResult.personId];
             [self createAlbertoPerson:expectation];
         }
-
+        
     }];
     
 }
-
 
 - (void)createAlbertoPerson:(XCTestExpectation *)expectation {
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client createPersonWithPersonGroupId:kPersonGroupId name:@"alberto" userData:@"alberto_userdata" completionBlock:^(MPOCreatePersonResult *createPersonResult, NSError *error) {
+    [client createPersonWithLargePersonGroupId:kLargePersonGroupId name:@"alberto" userData:@"alberto_userdata" completionBlock:^(MPOCreatePersonResult *createPersonResult, NSError *error) {
         
         if (error) {
             XCTFail("fail");
         }
         else {
             [self.peopleDataDict setObject:createPersonResult.personId forKey:@"alberto"];
-            [MPOTestHelpers addMultiplePersonFaces:@[kAlbertoImageName1, kAlbertoImageName2] personGroupId:kPersonGroupId personId:createPersonResult.personId];
+            [MPOTestHelpers addMultiplePersonFaces:@[kAlbertoImageName1, kAlbertoImageName2] largePersonGroupId:kLargePersonGroupId personId:createPersonResult.personId];
             [self createJohnPerson:expectation];
         }
         
     }];
-    
 }
 
 - (void)createJohnPerson:(XCTestExpectation *)expectation {
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client createPersonWithPersonGroupId:kPersonGroupId name:@"john" userData:@"john_userdata" completionBlock:^(MPOCreatePersonResult *createPersonResult, NSError *error) {
+    [client createPersonWithLargePersonGroupId:kLargePersonGroupId name:@"john" userData:@"john_userdata" completionBlock:^(MPOCreatePersonResult *createPersonResult, NSError *error) {
         
         if (error) {
             XCTFail("fail");
         }
         else {
             [self.peopleDataDict setObject:createPersonResult.personId forKey:@"john"];
-            [MPOTestHelpers addMultiplePersonFaces:@[kJohnImageName1, kJohnImageName2] personGroupId:kPersonGroupId personId:createPersonResult.personId];
+            [MPOTestHelpers addMultiplePersonFaces:@[kJohnImageName1, kJohnImageName2] largePersonGroupId:kLargePersonGroupId personId:createPersonResult.personId];
             [self trainGroup:expectation];
         }
         
     }];
-
+    
 }
 
 - (void)trainGroup:(XCTestExpectation *)expectation {
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client trainPersonGroupWithPersonGroupId:kPersonGroupId completionBlock:^(NSError *error) {
-        
+    [client trainLargePersonGroup:kLargePersonGroupId completionBlock:^(NSError *error) {
         if (error) {
             XCTFail("fail");
         }
         else {
             [self checkTrainingStatus:expectation];
         }
-
+        
     }];
     
 }
@@ -177,7 +173,7 @@
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client getPersonGroupTrainingStatusWithPersonGroupId:kPersonGroupId completionBlock:^(MPOTrainingStatus *trainingStatus, NSError *error) {
+    [client getLargePersonGroupTrainingStatus:kLargePersonGroupId completionBlock:^(MPOTrainingStatus *trainingStatus, NSError *error) {
         
         if (error) {
             XCTFail("fail");
@@ -197,7 +193,7 @@
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client identifyWithPersonGroupId:kPersonGroupId faceIds:[[NSArray alloc] initWithObjects:self.testDataDict[@"chris3"], self.testDataDict[@"alberto2"], nil] maxNumberOfCandidates:4 completionBlock:^(NSArray *collection, NSError *error) {
+    [client identifyWithLargePersonGroupId:kLargePersonGroupId faceIds:[[NSArray alloc] initWithObjects:self.testDataDict[@"chris3"], self.testDataDict[@"alberto2"], nil] maxNumberOfCandidates:4 completionBlock:^(NSArray *collection, NSError *error) {
         
         if (error) {
             XCTFail("fail");

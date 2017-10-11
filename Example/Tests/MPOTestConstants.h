@@ -33,6 +33,7 @@
 #define ProjectOxfordFaceDemo_MPOTestConstants_h
 
 static NSString * const kOxfordApiKey = @"";
+static NSString * const kOxfordApiEndPoint = @"";
 
 static NSString * const kChrisImageName1 = @"MSC13_ChrisA_01.jpg";
 static NSString * const kChrisImageName2 = @"MSC13_ChrisA_02.jpg";

@@ -34,13 +34,14 @@
 #import "UIImage+Crop.h"
 #import "ImageHelper.h"
 #import "PersonFace.h"
+#import "PersistedFace.h"
 #import "MPOSimpleFaceCell.h"
 #import "MBProgressHUD.h"
 #import "PersonFace.h"
 #import <ProjectOxfordFace/MPOFaceServiceClient.h>
 
 @interface MPOSimilarFaceViewController () <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDelegate, UICollectionViewDataSource> {
-    NSMutableArray<PersonFace*> * _selectedFaces;
+    NSMutableArray<PersistedFace*> * _selectedFaces;
     NSMutableArray<PersonFace*> * _baseFaces;
     UICollectionView * _imageContainer0;
     UICollectionView * _imageContainer1;
@@ -49,6 +50,7 @@
     UILabel * _imageCountLabel;
     NSInteger _selectIndex;
     NSInteger _selectedTargetIndex;
+    NSString * _largrFaceListId;
 }
 
 @end
@@ -92,21 +94,94 @@
     [self presentViewController:ipc animated:YES completion:nil];
 }
 
-- (void)findSimilarFace: (id)sender {
+- (void)createLargeFaceList {
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:HUD];
+    HUD.labelText = @"Creating Large Face List";
+    [HUD show: YES];
+    
+    NSString * largeFaceListId = [[[NSUUID UUID] UUIDString] lowercaseString];
+    
+    [client createLargeFaceList:largeFaceListId name:@"name" userData:nil completionBlock:^(NSError *error) {
+        [HUD removeFromSuperview];
+        if (error) {
+            [CommonUtil simpleDialog:@"Failed in creating large face list."];
+            NSLog(@"%@", error);
+            return;
+        }
+        _largrFaceListId = largeFaceListId;
+        [CommonUtil showSimpleHUD:@"Large face list created" forController:self.navigationController];
+    }];
+}
+
+- (void)deleteLargeFaceList {
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
+    [client deleteLargeFaceList:_largrFaceListId name:@"name" userData:nil completionBlock:^(NSError *error) {
+       if (error) {
+            NSLog(@"%@", error);
+            return;
+        }
+    }];
+}
+
+- (void)addFace:data image:(UIImage *) image{
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:HUD];
+    HUD.labelText = @"Adding faces";
+    [HUD show: YES];
+    
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
+    
+    [client addFaceInLargeFaceList:_largrFaceListId data:data userData:nil faceRectangle:nil  completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {
+        [HUD removeFromSuperview];
+        if (error) {
+            [CommonUtil showSimpleHUD:@"Failed in adding face" forController:self.navigationController];
+            return;
+        }
+        [CommonUtil showSimpleHUD:@"Successed in adding face" forController:self.navigationController];
+        
+        PersistedFace *obj = [[PersistedFace alloc] init];
+        obj.image = image;
+        obj.persistedFaceId = addPersistedFaceResult.persistedFaceId;
+        
+        [_selectedFaces addObject:obj];
+        
+        _imageCountLabel.text =  [NSString stringWithFormat:@"%d faces in total", (int32_t)_selectedFaces.count];
+        [_imageContainer0 reloadData];
+        [_imageContainer1 reloadData];
+        
+    }];
+}
+
+- (void)trainLargeFaceList {
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:HUD];
+    HUD.labelText = @"Training large face list";
+    [HUD show: YES];
+    
+    [client trainLargeFaceList:_largrFaceListId completionBlock:^(NSError *error) {
+        [HUD removeFromSuperview];
+        if (error) {
+            [CommonUtil showSimpleHUD:@"Failed in training large face list." forController:self.navigationController];
+        } else {
+            [self findSimilarFace];
+        }
+    }];
+}
+
+- (void)findSimilarFace {
+    
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:HUD];
     HUD.labelText = @"Finding similar faces";
     [HUD show: YES];
     
-    NSMutableArray *faceIds = [[NSMutableArray alloc] init];
-    
-    for (PersonFace *obj in _selectedFaces) {
-        [faceIds addObject:obj.face.faceId];
-    }
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
     
-    [client findSimilarWithFaceId:_baseFaces[_selectedTargetIndex].face.faceId faceIds:faceIds completionBlock:^(NSArray<MPOSimilarFace *> *collection, NSError *error) {
+    [client findSimilarWithFaceId:_baseFaces[_selectedTargetIndex].face.faceId largeFaceListId:_largrFaceListId completionBlock:^(NSArray<MPOSimilarPersistedFace *> *collection, NSError *error) {
         [HUD removeFromSuperview];
         
         if (error) {
@@ -118,8 +193,8 @@
             [v removeFromSuperview];
         }
         for (int i = 0; i < collection.count; i++) {
-            MPOSimilarFace * result = collection[i];
-            UIImageView * imageView = [[UIImageView alloc] initWithImage:((PersonFace*)[self faceForId:result.faceId]).image];
+            MPOSimilarPersistedFace * result = collection[i];
+            UIImageView * imageView = [[UIImageView alloc] initWithImage:((PersistedFace*)[self faceForId:result.persistedFaceId]).image];
             imageView.width = _resultContainer.width / 6;
             imageView.height = imageView.width;
             imageView.left = 5;
@@ -143,9 +218,9 @@
     }];
 }
 
-- (PersonFace*)faceForId:(NSString*)faceId {
-    for (PersonFace * face in _selectedFaces) {
-        if ([face.face.faceId isEqualToString:faceId]) {
+- (PersistedFace*)faceForId:(NSString*)faceId {
+    for (PersistedFace * face in _selectedFaces) {
+        if ([face.persistedFaceId isEqualToString:faceId]) {
             return face;
         }
     }
@@ -260,11 +335,14 @@
     _findBtn.left = 20;
     _findBtn.top = _resultContainer.bottom + 30;
     _findBtn.enabled = NO;
-    [_findBtn addTarget:self action:@selector(findSimilarFace:) forControlEvents:UIControlEventTouchUpInside];
+    [_findBtn addTarget:self action:@selector(trainLargeFaceList) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:_findBtn];
     
     scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, _findBtn.bottom + 20);
     [self.view addSubview:scrollView];
+    
+    [self deleteLargeFaceList];
+    [self createLargeFaceList];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -293,45 +371,48 @@
     
     [picker dismissViewControllerAnimated:YES completion:nil];
     
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    [self.navigationController.view addSubview:HUD];
-    HUD.labelText = @"Detecting faces";
-    [HUD show: YES];
-    
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
+   
     NSData *data = UIImageJPEGRepresentation(_selectedImage, 0.8);
-    [client detectWithData:data returnFaceId:YES returnFaceLandmarks:YES returnFaceAttributes:@[] completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
-        [HUD removeFromSuperview];
-        if (error) {
-            [CommonUtil showSimpleHUD:@"Detection failed" forController:self.navigationController];
-            return;
-        }
-        
-        NSMutableArray * faces = [[NSMutableArray alloc] init];
-        
-        for (MPOFace *face in collection) {
-            UIImage *croppedImage = [_selectedImage crop:CGRectMake(face.faceRectangle.left.floatValue, face.faceRectangle.top.floatValue, face.faceRectangle.width.floatValue, face.faceRectangle.height.floatValue)];
-            PersonFace *obj = [[PersonFace alloc] init];
-            obj.image = croppedImage;
-            obj.face = face;
-            [faces addObject:obj];
-        }
-        
-        if (_selectIndex == 0) {
-            [_selectedFaces addObjectsFromArray:faces];
-        } else {
+    if(_selectIndex != 0){
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:HUD];
+        HUD.labelText = @"Detecting faces";
+        [HUD show: YES];
+        MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
+    
+            [client detectWithData:data returnFaceId:YES returnFaceLandmarks:YES returnFaceAttributes:@[] completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
+            [HUD removeFromSuperview];
+            if (error) {
+                [CommonUtil showSimpleHUD:@"Detection failed" forController:self.navigationController];
+                return;
+            }
+            
+            NSMutableArray * faces = [[NSMutableArray alloc] init];
+            
+            for (MPOFace *face in collection) {
+                UIImage *croppedImage = [_selectedImage crop:CGRectMake(face.faceRectangle.left.floatValue, face.faceRectangle.top.floatValue, face.faceRectangle.width.floatValue, face.faceRectangle.height.floatValue)];
+                PersonFace *obj = [[PersonFace alloc] init];
+                obj.image = croppedImage;
+                obj.face = face;
+                [faces addObject:obj];
+            }
+            
             [_baseFaces removeAllObjects];
             [_baseFaces addObjectsFromArray:faces];
             _findBtn.enabled = NO;
             _selectedTargetIndex = -1;
-        }
-        _imageCountLabel.text =  [NSString stringWithFormat:@"%d faces in total", (int32_t)_selectedFaces.count];
-        [_imageContainer0 reloadData];
-        [_imageContainer1 reloadData];
-        if (collection.count == 0) {
-            [CommonUtil showSimpleHUD:@"No face detected." forController:self.navigationController];
-        }
-    }];
+            
+            _imageCountLabel.text =  [NSString stringWithFormat:@"%d faces in total", (int32_t)_selectedFaces.count];
+            [_imageContainer0 reloadData];
+            [_imageContainer1 reloadData];
+            if (collection.count == 0) {
+                [CommonUtil showSimpleHUD:@"No face detected." forController:self.navigationController];
+            }
+        }];
+    }else {
+        [self addFace:data image:_selectedImage];
+    }
+    
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo{
@@ -363,8 +444,13 @@
 {
     MPOSimpleFaceCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"faceCell" forIndexPath:indexPath];
     cell.layer.borderWidth = 0;
-    NSArray * faces = (collectionView == _imageContainer0) ? _selectedFaces : _baseFaces;
-    cell.imageView.image = ((PersonFace*)faces[indexPath.row]).image;
+    NSArray * faces;
+    if(collectionView == _imageContainer0){
+        cell.imageView.image = _selectedFaces[indexPath.row].image;
+    }else{
+        faces = _baseFaces;
+        cell.imageView.image = ((PersonFace*)faces[indexPath.row]).image;
+    }
     if (collectionView == _imageContainer1 && indexPath.row == _selectedTargetIndex) {
         cell.layer.borderWidth = 2;
         cell.layer.borderColor = [[UIColor redColor] CGColor];

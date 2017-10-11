@@ -62,7 +62,7 @@
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"asynchronous request"];
     
-    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithSubscriptionKey:kOxfordApiKey];
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
     [client findSimilarWithFaceId:self.testDataDict[@"chris1"] faceIds:[NSArray arrayWithObjects:self.testDataDict[@"chris2"], self.testDataDict[@"chris3"], self.testDataDict[@"alberto1"], self.testDataDict[@"michelle1"], nil] completionBlock:^(NSArray<MPOSimilarFace *> *collection, NSError *error) {
         
@@ -71,18 +71,13 @@
         }
         else {
             XCTAssertEqual(collection.count, 2);
-            
             NSMutableArray *faceIds = [[NSMutableArray alloc] init];
-            
             for (MPOSimilarFace *similarFace in collection) {
                 [faceIds addObject:similarFace.faceId];
             }
-                        
             XCTAssertTrue([faceIds containsObject:self.testDataDict[@"chris2"]]);
             XCTAssertTrue([faceIds containsObject:self.testDataDict[@"chris3"]]);
-
         }
-        
         [expectation fulfill];
         
     }];

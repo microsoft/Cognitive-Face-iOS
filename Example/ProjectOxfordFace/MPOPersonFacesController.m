@@ -133,7 +133,7 @@
         HUD.labelText = @"Updating person";
         [HUD show: YES];
         
-        [client updatePersonWithPersonGroupId:self.group.groupId personId:self.person.personId name:_personNameField.text userData:nil completionBlock:^(NSError *error) {
+        [client updatePersonWithLargePersonGroupId:self.group.groupId personId:self.person.personId name:_personNameField.text userData:nil completionBlock:^(NSError *error) {
             [HUD removeFromSuperview];
             if (error) {
                 [CommonUtil simpleDialog:@"Failed in updating person."];
@@ -246,7 +246,7 @@
     HUD.labelText = @"creating person";
     [HUD show: YES];
     
-    [client createPersonWithPersonGroupId:self.group.groupId name:_personNameField.text userData:nil completionBlock:^(MPOCreatePersonResult *createPersonResult, NSError *error) {
+    [client createPersonWithLargePersonGroupId:self.group.groupId name:_personNameField.text userData:nil completionBlock:^(MPOCreatePersonResult *createPersonResult, NSError *error) {
         [HUD removeFromSuperview];
         if (error || !createPersonResult.personId) {
             [CommonUtil showSimpleHUD:@"Failed in creating person." forController:self.navigationController];
@@ -291,7 +291,7 @@
             HUD.labelText = @"Deleting this face";
             [HUD show: YES];
             
-            [client deletePersonFaceWithPersonGroupId:self.group.groupId personId:self.person.personId persistedFaceId:((PersonFace*)self.person.faces[_selectFaceIndex]).faceId completionBlock:^(NSError *error) {
+            [client deletePersonFaceWithLargePersonGroupId:self.group.groupId personId:self.person.personId persistedFaceId:((PersonFace*)self.person.faces[_selectFaceIndex]).faceId completionBlock:^(NSError *error) {
                 [HUD removeFromSuperview];
                 if (error) {
                     [CommonUtil showSimpleHUD:@"Failed in deleting this face" forController:self.navigationController];
@@ -344,7 +344,7 @@
             [self.navigationController.view addSubview:HUD];
             HUD.labelText = @"Adding faces";
             [HUD show: YES];
-            [client addPersonFaceWithPersonGroupId:self.group.groupId personId:self.person.personId data:data userData:nil faceRectangle:collection[0].faceRectangle completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {
+            [client addPersonFaceWithLargePersonGroupId:self.group.groupId personId:self.person.personId data:data userData:nil faceRectangle:collection[0].faceRectangle completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {
                 [HUD removeFromSuperview];
                 if (error) {
                     [CommonUtil showSimpleHUD:@"Failed in adding face" forController:self.navigationController];

@@ -29,14 +29,10 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
 #import <Foundation/Foundation.h>
 
-@interface MPOTestHelpers : NSObject
-+ (NSDictionary *)detectWithDict:(NSDictionary *)dataDict;
-+ (BOOL)addMultiplePersonFaces:(NSArray *)urlArray personGroupId:(NSString *)personGroupId personId:(NSString *)personId;
-+ (BOOL)addMultiplePersonFaces:(NSArray *)urlArray largePersonGroupId:(NSString *)personGroupId personId:(NSString *)personId;
-+ (BOOL)clearAllPersonGroups;
-+ (BOOL)clearAllLargePersonGroups;
-
+@interface MPOSimilarPersistedFace : NSObject
+@property (nonatomic, retain) NSString *persistedFaceId;
+@property (nonatomic, retain) NSNumber *confidence;
 @end
+

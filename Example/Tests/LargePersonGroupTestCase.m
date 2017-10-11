@@ -30,18 +30,21 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #import <XCTest/XCTest.h>
-#import "MPOFaceSDK.h"
 #import "MPOTestConstants.h"
-@interface VerifyTestCase : XCTestCase
-@property NSString *testFirstFaceId;
-@property NSString *testSecondFaceId;
+#import "MPOFaceSDK.h"
+#import "MPOTestHelpers.h"
+#define kLargePersonGroup @"testlargepersongroupid"
+@interface LargePersonGroupTestCase : XCTestCase
+
 @end
 
-@implementation VerifyTestCase
+@implementation LargePersonGroupTestCase
 
 - (void)setUp {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    [MPOTestHelpers clearAllLargePersonGroups];
 }
 
 - (void)tearDown {
@@ -49,67 +52,87 @@
     [super tearDown];
 }
 
-
-- (void)testVerify {
+- (void)testLargePersonGroup {
+    
+    
     XCTestExpectation *expectation = [self expectationWithDescription:@"asynchronous request"];
-    [self detectFirstImage:expectation];
-    [self waitForExpectationsWithTimeout:10.0 handler:nil];
-}
-
-- (void)detectFirstImage:(XCTestExpectation *)expectation {
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client detectWithData:UIImageJPEGRepresentation([UIImage imageNamed:kChrisImageName1], 1.0) returnFaceId:YES returnFaceLandmarks:NO returnFaceAttributes:nil completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
-       
+    [client createLargePersonGroup:kLargePersonGroup name:@"test_persongroup_name" userData:@"test_persongroup_userdata" completionBlock:^(NSError *error) {
+        
         if (error) {
-            XCTFail(@"fail");
+            XCTFail("error creating test person group");
         }
         else {
-            XCTAssertEqual(collection.count, 1);
-            for (MPOFace *face in collection) {
-                self.testFirstFaceId = face.faceId;
-            }
+            [self getLargePersonGroup:expectation];
         }
-        [self detectSecondImage:expectation];
+        
+    }];
+    
+    [self waitForExpectationsWithTimeout:100.0 handler:nil];
+    
+}
+
+- (void)getLargePersonGroup:(XCTestExpectation *)expectation {
+    
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
+    
+    [client getLargePersonGroup:kLargePersonGroup completionBlock:^(MPOLargePersonGroup *largePersonGroup, NSError *error) {
+        
+        if (error) {
+            XCTFail("error");
+        }
+        else {
+            XCTAssertEqualObjects(largePersonGroup.largePersonGroupId, kLargePersonGroup);
+        }
+        [self updateLargePersonGroup:expectation];
         
     }];
     
 }
 
-- (void)detectSecondImage:(XCTestExpectation *)expectation {
-    
+- (void)updateLargePersonGroup:(XCTestExpectation *)expectation {
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client detectWithData:UIImageJPEGRepresentation([UIImage imageNamed:kChrisImageName2], 1.0) returnFaceId:YES returnFaceLandmarks:NO returnFaceAttributes:nil completionBlock:^(NSArray<MPOFace *> *collection, NSError *error) {
+    [client updateLargePersonGroup:kLargePersonGroup name:@"test_persongroup_name_update" userData:@"test_persongroup_userdata_update" completionBlock:^(NSError *error) {
         
         if (error) {
-            XCTFail(@"fail");
+            XCTFail("error");
         }
-        else {
-            XCTAssertEqual(collection.count, 1);
-            for (MPOFace *face in collection) {
-                self.testSecondFaceId = face.faceId;
-            }
-        }
-        [self startVerify:expectation];
-
+        [self checkIfUpdateWorked:expectation];
+        
     }];
     
 }
 
-
-- (void)startVerify:(XCTestExpectation *)expectation {
+- (void)checkIfUpdateWorked:(XCTestExpectation *)expectation {
     
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
     
-    [client verifyWithFirstFaceId:self.testFirstFaceId faceId2:self.testSecondFaceId completionBlock:^(MPOVerifyResult *verifyResult, NSError *error) {
-       
+    [client getLargePersonGroup:kLargePersonGroup completionBlock:^(MPOLargePersonGroup *largePersonGroup, NSError *error) {
+    
         if (error) {
-            XCTFail("fail");
+            XCTFail("error");
         }
         else {
-            XCTAssertTrue(verifyResult.isIdentical);
+            XCTAssertEqualObjects(largePersonGroup.name, @"test_persongroup_name_update");
+            XCTAssertEqualObjects(largePersonGroup.userData, @"test_persongroup_userdata_update");
+        }
+        [self deleteLargePersonGroup:expectation];
+        
+    }];
+    
+}
+
+- (void)deleteLargePersonGroup:(XCTestExpectation *)expectation {
+    
+    MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:kOxfordApiEndPoint key:kOxfordApiKey];
+    
+    [client deleteLargePersonGroup:kLargePersonGroup completionBlock:^(NSError *error) {
+        
+        if (error) {
+            XCTFail("error");
         }
         [expectation fulfill];
         

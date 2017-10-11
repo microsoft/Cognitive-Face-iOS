@@ -29,14 +29,17 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+#import "MPOLargeFaceList.h"
 
-#import <Foundation/Foundation.h>
-
-@interface MPOTestHelpers : NSObject
-+ (NSDictionary *)detectWithDict:(NSDictionary *)dataDict;
-+ (BOOL)addMultiplePersonFaces:(NSArray *)urlArray personGroupId:(NSString *)personGroupId personId:(NSString *)personId;
-+ (BOOL)addMultiplePersonFaces:(NSArray *)urlArray largePersonGroupId:(NSString *)personGroupId personId:(NSString *)personId;
-+ (BOOL)clearAllPersonGroups;
-+ (BOOL)clearAllLargePersonGroups;
+@implementation MPOLargeFaceList
+-(instancetype)initWithDictionary:(NSDictionary *)dict {
+    self = [super init];
+    if (self) {        
+        self.largeFaceListId = dict[@"largeFaceListId"];
+        self.name = dict[@"name"];
+        self.userData = dict[@"userData"];
+    }
+    return self;
+}
 
 @end

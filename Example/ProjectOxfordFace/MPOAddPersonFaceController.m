@@ -90,7 +90,7 @@
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
     NSData *data = UIImageJPEGRepresentation(self.image, 0.8);
     
-    [client addPersonFaceWithPersonGroupId:self.group.groupId personId:self.person.personId data:data userData:nil faceRectangle:face.face.faceRectangle completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {
+    [client addPersonFaceWithLargePersonGroupId:self.group.groupId personId:self.person.personId data:data userData:nil faceRectangle:face.face.faceRectangle completionBlock:^(MPOAddPersistedFaceResult *addPersistedFaceResult, NSError *error) {
         [HUD removeFromSuperview];
         if (error) {
             [CommonUtil showSimpleHUD:@"Failed in adding face" forController:self.navigationController];

@@ -95,7 +95,7 @@
     HUD.labelText = @"Identifying faces";
     [HUD show: YES];
     MPOFaceServiceClient *client = [[MPOFaceServiceClient alloc] initWithEndpointAndSubscriptionKey:ProjectOxfordFaceEndpoint key:ProjectOxfordFaceSubscriptionKey];
-    [client identifyWithPersonGroupId:group.groupId faceIds:faceIds maxNumberOfCandidates:group.people.count completionBlock:^(NSArray<MPOIdentifyResult *> *collection, NSError *error) {
+    [client identifyWithLargePersonGroupId:group.groupId faceIds:faceIds maxNumberOfCandidates:group.people.count completionBlock:^(NSArray<MPOIdentifyResult *> *collection, NSError *error) {
         [HUD removeFromSuperview];
         if (error) {
             [CommonUtil showSimpleHUD:@"Failed in Indentification" forController:self.navigationController];

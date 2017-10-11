@@ -28,15 +28,11 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
 #import <Foundation/Foundation.h>
 
-@interface MPOTestHelpers : NSObject
-+ (NSDictionary *)detectWithDict:(NSDictionary *)dataDict;
-+ (BOOL)addMultiplePersonFaces:(NSArray *)urlArray personGroupId:(NSString *)personGroupId personId:(NSString *)personId;
-+ (BOOL)addMultiplePersonFaces:(NSArray *)urlArray largePersonGroupId:(NSString *)personGroupId personId:(NSString *)personId;
-+ (BOOL)clearAllPersonGroups;
-+ (BOOL)clearAllLargePersonGroups;
-
+@interface MPOLargePersonGroup : NSObject
+@property NSString *largePersonGroupId;
+@property NSString *name;
+@property NSString *userData;
+-(instancetype)initWithDictionary:(NSDictionary *)dict;
 @end

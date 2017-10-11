@@ -274,7 +274,7 @@
         PersonFace *secondSelectedFaceObject = _faces1[_selectedFaceIndex1];
         [client verifyWithFirstFaceId:firstSelectedFaceObject.face.faceId faceId2:secondSelectedFaceObject.face.faceId completionBlock:completionBlock];
     } else {
-        [client verifyWithFaceId:firstSelectedFaceObject.face.faceId personId:_selectedPerson.personId personGroupId:_selectedGroup.groupId completionBlock:completionBlock];
+        [client verifyWithFaceId:firstSelectedFaceObject.face.faceId personId:_selectedPerson.personId largePersonGroupId:_selectedGroup.groupId completionBlock:completionBlock];
     }
     
 }
