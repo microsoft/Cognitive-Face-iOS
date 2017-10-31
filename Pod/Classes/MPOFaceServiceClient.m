@@ -58,6 +58,9 @@ typedef void(^PORequestCompletionBlock)(NSURLResponse *response, id responseObje
 
     self = [super init];
     if (self) {
+        if(![endpoint hasSuffix:@"/"]){
+            endpoint = [endpoint stringByAppendingString:@"/"];
+        }
         self.endpoint = endpoint;
         self.subscriptionKey = key;
     }
