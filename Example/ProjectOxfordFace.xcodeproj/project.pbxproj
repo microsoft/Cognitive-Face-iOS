@@ -168,7 +168,8 @@
 		87F83B3BC26C7A3EF3D14D52 /* Pods_ProjectOxfordFace_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProjectOxfordFace_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A51D13CAF7F407F1572D680E /* Pods-ProjectOxfordFace_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProjectOxfordFace_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProjectOxfordFace_Example/Pods-ProjectOxfordFace_Example.release.xcconfig"; sourceTree = "<group>"; };
 		AE558E5537FC3033395667D9 /* Pods_ProjectOxfordFace_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProjectOxfordFace_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E25BA4F320FDCD1F00C18B42 /* PersistedFace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PersistedFace.m; path = ProjectOxfordFace/PersistedFace.m; sourceTree = "<group>"; };
+		E25BA4F320FDCD1F00C18B42 /* PersistedFace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersistedFace.m; sourceTree = "<group>"; };
+		E29E6B5A20FDCECF006F5A02 /* PersistedFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistedFace.h; sourceTree = "<group>"; };
 		EF575B061C6872540021A3AD /* DetectTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetectTestCase.m; sourceTree = "<group>"; };
 		EF575B071C6872540021A3AD /* GroupTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupTestCase.m; sourceTree = "<group>"; };
 		EF575B081C6872540021A3AD /* IdentifyTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentifyTestCase.m; sourceTree = "<group>"; };
@@ -218,7 +219,6 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
-				E25BA4F320FDCD1F00C18B42 /* PersistedFace.m */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* Example for ProjectOxfordFace */,
 				6003F5B5195388D20070C39A /* Tests */,
@@ -421,6 +421,8 @@
 		7B643B851D5F44F60012F342 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E29E6B5A20FDCECF006F5A02 /* PersistedFace.h */,
+				E25BA4F320FDCD1F00C18B42 /* PersistedFace.m */,
 				7B643B901D5F45190012F342 /* GroupPerson.h */,
 				7B643B911D5F45190012F342 /* GroupPerson.m */,
 				7B643B921D5F45190012F342 /* PersonFace.h */,
