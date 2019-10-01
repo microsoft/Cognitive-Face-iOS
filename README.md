@@ -21,7 +21,7 @@ iOS must be version 8.1 or higher.
 The sample app should already have the necessary Pods shipped with it. Open the `ProjectOxfordFace.xcworkspace` in Xcode and build.
 
  1. First, you must obtain a Face API subscription key by [following the instructions on our website](https://azure.microsoft.com/en-us/try/cognitive-services/?api=face-api).
- 2. Once in Xcode, under the example subdirectory, navigate to the file `MPOAppDelegate.h` and insert your subscription key for the Face API.
+ 2. Once in Xcode, under the example subdirectory, navigate to the file `MPOAppDelegate.h` and insert your subscription key and endpoint for the Face API.
  3. To run the sample app, ensure that the target on top left side of Xcode is selected as `ProjectOxfordFace-Example` and select the play button or select Product > Run on the menu bar.
  4. Once the app is launched, click on the buttons to try out the different scenarios.
 
